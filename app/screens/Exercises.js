@@ -27,7 +27,7 @@ const Exercises = () => {
       <Image
         source={require("../../assets/placeholder_logo.jpeg")}
         style={styles.logo}
-      />
+      />   
       <Text>My Exercises</Text>
       <FlatList
         data={exercises}
@@ -35,17 +35,14 @@ const Exercises = () => {
         renderItem={({ item }) => (
           <View style={styles.item}>
             <Text style={styles.title}>{item.exerciseName}</Text>
-            <FlatList
-              data={item.exerciseStats}
-              keyExtractor={(stat) => stat.createdAt}
-              renderItem={({ item }) => (
+            
                 <View style={styles.stats}>
                   <Text>Weight: {item.weightKg} kg</Text>
                   <Text>Sets: {item.sets}</Text>
                   <Text>Reps: {item.reps}</Text>
                 </View>
               )}
-            />
+            
           </View>
         )}
       />
