@@ -24,7 +24,7 @@ const Exercises = () => {
         source={require("../../assets/placeholder_logo.jpeg")}
         style={styles.logo}
       />
-      <Text>My Exercises</Text>
+      <Text>My Exercisess</Text>
       <FlatList data={[
         {key: "laurie"},
         {key: "harry"},
