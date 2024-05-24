@@ -11,8 +11,8 @@ const Exercises = () => {
   const {username} = useContext(UserContext)
 
   useEffect(() => {
+
     getExercises(username).then((res) => {
-       console.log(res.data)
       setExercises(res.data.exercises)
     })
     .catch((err) => {
@@ -21,13 +21,12 @@ const Exercises = () => {
   }, [username])
 
 
-
   return (
-     <View style={styles.container}>
+     <View style={styles.headerText}>
       <Image
         source={require("../../assets/placeholder_logo.jpeg")}
         style={styles.logo}
-      />   
+      />
       <Text>My Exercises</Text>
       <FlatList
         data={exercises}
@@ -35,14 +34,17 @@ const Exercises = () => {
         renderItem={({ item }) => (
           <View style={styles.item}>
             <Text style={styles.title}>{item.exerciseName}</Text>
-            
+            <FlatList
+              data={item.exerciseStats}
+              keyExtractor={(stat) => stat.createdAt}
+              renderItem={({ item }) => (
                 <View style={styles.stats}>
-                  <Text>Weight: {item.weightKg} kg</Text>
-                  <Text>Sets: {item.sets}</Text>
-                  <Text>Reps: {item.reps}</Text>
+                  <Text style={styles.text}>Weight: {item.weightKg} kg</Text>
+                  <Text style={styles.text}>Sets: {item.sets}</Text>
+                  <Text style={styles.text}>Reps: {item.reps}</Text>
                 </View>
               )}
-            
+            />
           </View>
         )}
       />
@@ -55,17 +57,49 @@ const Exercises = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
     alignItems: "center",
+    paddingTop: 20,
+    backgroundColor: "#fff",
   },
-  logo: {
-    width: 100,
-    height: 100,
-    marginBottom: 20,
+  tabHeader: {
+    fontSize: 30,
+    fontWeight: "bold",
+    color: "#7F00FF",
+    marginBottom: 10,
   },
-  item: {
-    fontSize: 100,
-  }
+  headerRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    width: 300,
+    marginBottom: 10,
+  },
+  headerText: {
+    fontWeight: "bold",
+    color: "#8F87A1",
+    fontSize: 18,
+  },
+  tableRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    width: 300,
+    height: 80,
+    marginBottom: 10,
+    backgroundColor: "rgba(189, 181, 213, 0.25)",
+    borderRadius: 10,
+    padding: 10,
+  },
+  levelImage: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    objectFit: "cover",
+  },
+  text: {
+    fontSize: 18,
+    fontWeight: "bold",
+    color: "#7F00FF",
+  },
 });
 
 export default Exercises;
