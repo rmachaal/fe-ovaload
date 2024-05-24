@@ -1,41 +1,56 @@
 import React from "react";
-import { View, Text, Image, StyleSheet, FlatList, TouchableOpacity} from "react-native";
+import { View, Text, Button, Image, StyleSheet, FlatList, TouchableOpacity} from "react-native";
 import { UserContext } from "../contexts/UserContext"
-import { Card } from "react-native-elements"
+// import { Card } from "react-native-elements"
 import { getExercises } from "../../api";
+import { useState, useContext, useEffect } from "react"
 
 const Exercises = () => {
 
   const [exercises, setExercises] = useState([])
   const {username} = useContext(UserContext)
 
-  // useEffect(() => {
-  //   getExercises(username).then((res) => {
-  //     setExercises(res.data)
-  //   })
-  //   .catch(err){
-  //   console.error(err)
-  //  }
-  // }, [])
+  useEffect(() => {
+    getExercises(username).then((res) => {
+       console.log(res.data)
+      setExercises(res.data.exercises)
+    })
+    .catch((err) => {
+      console.error(err)
+    })
+  }, [username])
+
+
 
   return (
-    <View style={styles.container}>
+     <View style={styles.container}>
       <Image
         source={require("../../assets/placeholder_logo.jpeg")}
         style={styles.logo}
-      />
-      <Text>My Exercisess</Text>
-      <FlatList data={[
-        {key: "laurie"},
-        {key: "harry"},
-        {key: "rahaf"},
-        {key: "angela"}
-      ]}
-      renderItem={({item}) => <Text style={styles.item}>{item.key}</Text>}
+      />   
+      <Text>My Exercises</Text>
+      <FlatList
+        data={exercises}
+        keyExtractor={(item) => item._id}
+        renderItem={({ item }) => (
+          <View style={styles.item}>
+            <Text style={styles.title}>{item.exerciseName}</Text>
+            
+                <View style={styles.stats}>
+                  <Text>Weight: {item.weightKg} kg</Text>
+                  <Text>Sets: {item.sets}</Text>
+                  <Text>Reps: {item.reps}</Text>
+                </View>
+              )}
+            
+          </View>
+        )}
       />
     </View>
   );
 };
+
+
 
 const styles = StyleSheet.create({
   container: {
@@ -48,6 +63,9 @@ const styles = StyleSheet.create({
     height: 100,
     marginBottom: 20,
   },
+  item: {
+    fontSize: 100,
+  }
 });
 
 export default Exercises;
