@@ -2,14 +2,21 @@ import React from "react";
 import { View, Text, Image, StyleSheet, FlatList, TouchableOpacity} from "react-native";
 import { UserContext } from "../contexts/UserContext"
 import { Card } from "react-native-elements"
+import { getExercises } from "../../api";
 
 const Exercises = () => {
 
   const [exercises, setExercises] = useState([])
+  const {username} = useContext(UserContext)
 
-  useEffect(() => {
-    
-  })
+  // useEffect(() => {
+  //   getExercises(username).then((res) => {
+  //     setExercises(res.data)
+  //   })
+  //   .catch(err){
+  //   console.error(err)
+  //  }
+  // }, [])
 
   return (
     <View style={styles.container}>
@@ -18,9 +25,14 @@ const Exercises = () => {
         style={styles.logo}
       />
       <Text>My Exercises</Text>
-      <FlatList>
-
-      </FlatList>
+      <FlatList data={[
+        {key: "laurie"},
+        {key: "harry"},
+        {key: "rahaf"},
+        {key: "angela"}
+      ]}
+      renderItem={({item}) => <Text style={styles.item}>{item.key}</Text>}
+      />
     </View>
   );
 };
