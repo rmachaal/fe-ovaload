@@ -1,23 +1,47 @@
-import React from "react";
-import { View, Text, Image, StyleSheet, FlatList } from "react-native";
-
-const exampleArr = [
-  { id: "1", user: "Sarah", score: 10 },
-  { id: "2", user: "Tom", score: 50 },
-  { id: "3", user: "Jim", score: 30 },
-  { id: "4", user: "Jane", score: 5 },
-  { id: "5", user: "Beth", score: 75 },
-];
+import React, { useEffect, useState } from "react";
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  FlatList,
+  ActivityIndicator,
+} from "react-native";
+import { getFriendsScores } from "../../api";
+import { UserContext } from "../contexts/UserContext";
+import { useContext } from "react";
 
 const imageMap = {
-  1: require("../../assets/leaderboard/level0.png"),
-  2: require("../../assets/leaderboard/level1.png"),
-  3: require("../../assets/leaderboard/level2.png"),
-  4: require("../../assets/leaderboard/level3.png"),
-  5: require("../../assets/leaderboard/level4.png"),
+  0: require("../../assets/leaderboard/level0.png"),
+  1: require("../../assets/leaderboard/level1.png"),
+  2: require("../../assets/leaderboard/level2.png"),
+  3: require("../../assets/leaderboard/level3.png"),
+  4: require("../../assets/leaderboard/level4.png"),
 };
 
 const Leaderboard = () => {
+  const { username } = useContext(UserContext);
+  const [leaderboardData, setLeaderboardData] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchLeaderboardData() {
+      try {
+        const data = await getFriendsScores(username);
+        setLeaderboardData(data);
+      } catch (error) {
+        console.error("Error fetching leaderboard data:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchLeaderboardData();
+  }, [username]);
+
+  if (loading) {
+    return <ActivityIndicator size="large" color="#7F00FF" />;
+  }
+
   return (
     <View style={styles.container}>
       <Text style={styles.tabHeader}>Leaderboard</Text>
@@ -27,14 +51,14 @@ const Leaderboard = () => {
         <Text style={styles.headerText}>Score</Text>
       </View>
       <FlatList
-        data={exampleArr}
+        data={leaderboardData}
         renderItem={({ item, index }) => {
-          const image = imageMap[index + 1];
+          const image = imageMap[index];
           return (
             <View style={styles.tableRow}>
               <Text style={styles.text}>{index + 1}</Text>
               <Image source={image} style={styles.levelImage} />
-              <Text style={styles.text}>{item.user}</Text>
+              <Text style={styles.text}>{item.username}</Text>
               <Text style={styles.text}>{item.score}</Text>
             </View>
           );
@@ -53,10 +77,10 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
   },
   tabHeader: {
-    fontSize: 30,
+    fontSize: 45,
     fontWeight: "bold",
     color: "#7F00FF",
-    marginBottom: 10,
+    marginBottom: 25,
   },
   headerRow: {
     flexDirection: "row",
@@ -73,11 +97,12 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    width: 300,
+    width: 375,
     height: 80,
     marginBottom: 10,
     backgroundColor: "rgba(189, 181, 213, 0.25)",
     borderRadius: 10,
+    margin: 10,
     padding: 10,
   },
   levelImage: {
