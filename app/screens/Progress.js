@@ -1,11 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, FlatList } from 'react-native';
+import { UserContext } from '../contexts/UserContext';
 
-const Calendar = () => {
+const Progress = () => {
   const date = new Date();
   const [year, setYear] = useState(date.getFullYear());
   const [month, setMonth] = useState(date.getMonth());
   const [days, setDays] = useState([]);
+
+  const {username} = useContext(UserContext)
 
   const months = [
     "January", "February", "March", "April", "May", "June",
@@ -139,4 +142,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Calendar;
+export default Progress;
