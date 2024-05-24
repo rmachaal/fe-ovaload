@@ -1,6 +1,3 @@
-import React from "react";
-import { useState } from 'react';
-
 import { View, Text, Image, StyleSheet, Dimensions, Button } from "react-native";
 import {
   LineChart,
@@ -11,34 +8,62 @@ import {
   StackedBarChart
 } from "react-native-chart-kit";
 import ProgressBar from 'react-native-progress/Bar';
+import { React, useState, useEffect } from "react";
+import { useParams } from "react-router-dom"
 import { Touchable } from "react-native-web";
+import { getExerciseById } from "../../api";
+import { ErrorHandling } from "../Components/ErrorHandling"
 
 
+const IndividualExercisePage = (props) => {
 
-const HomeScreen = (props) => {
-  const [progress, setProgress] = useState(0);
+    const {exerciseId} = useParams()    
+    const [progress, setProgress] = useState(0);
+    const [isLoading, setIsLoading] = useState(false)
+    const [exercise, setExercise] = useState([])
+    const [error, setError] = useState(null)
+
+    // const exerciseHistory = {
+    //     exercise.
+    // }
+
   const handlePress = () => {
     setProgress((prevProgress) => prevProgress + 0.1);
   };
 
+  useEffect(() => {
+    setIsLoading(true)
+    getExerciseById(exerciseId)
+    .then((response) => {
+    setExercise(response.data.exerciseData)
+    console.log(response.data.exerciseData)
+    setIsLoading(false)
+    })
+    .catch((err) => {
+        setError(err)
+        setIsLoading(false)
+    })  
+  }, [exerciseId])
+
+
+  if (error) {
+    return <ErrorHandling error={error}/>
+  }
+
+// if is loading goes here 
+
   return (
     <View style={styles.container}>
       <Image source={require("../../assets/placeholder_logo.jpeg")} style={styles.logo} />
-      <Text>Home Screen</Text>
+      <Text>Individual Exercise Page</Text>
       <View>
   <Text>Rahaf likes gradients</Text>
   <LineChart
     data={{
-      labels: ["January", "February", "March", "April", "May", "June"], // this changes the x axis input, can change to dates etc
+      labels: [exercise.exercisestats[exercise.exerciseStats.length -1] ], // this changes the x axis input, can change to dates etc
       datasets: [
         {
-          data: [
-            40,
-         50,
-         60,
-         70,
-         70, /// this changes actual acheived data e.g squat history will be imported
-          ]
+          data: exercise.exerciseStats[0]
         }
       ]
     }}
@@ -69,6 +94,29 @@ const HomeScreen = (props) => {
       borderRadius: 16
     }}
   />
+     <View style={styles.container}>
+      <FlatList
+        data={exercise}
+        keyExtractor={(item) => item._id}
+        renderItem={({ item }) => (
+          <View style={styles.item}>
+            <Text style={styles.title}>{item.exerciseName}</Text>
+            <FlatList
+              data={item.exerciseStats}
+              keyExtractor={(stat) => stat.createdAt}
+              renderItem={({ item }) => (
+                <View style={styles.stats}>
+                  <Text>Weight: {item.weightKg} kg</Text>
+                  <Text>Sets: {item.sets}</Text>
+                  <Text>Reps: {item.reps}</Text>
+                  <Text>Date: {new Date(item.createdAt).toLocaleDateString()}</Text>
+                </View>
+              )}
+            />
+          </View>
+        )}
+      />
+    </View>
         {/* <ProgressBar progress={progress} width={200} height={20} /> */}
         <ProgressBar progress={progress} width={387} height={20} color="#C3B1E1" borderWidth={2} borderRadius={16}/>
       <Button onPress={handlePress} title="Increase progress" />
@@ -103,4 +151,4 @@ const chartConfig = {
   useShadowColorFromDataset: false // optional
 };
 
-export default HomeScreen;
+export default IndividualExercisePage;
