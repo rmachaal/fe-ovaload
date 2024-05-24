@@ -13,6 +13,7 @@ import {
 import ProgressBar from 'react-native-progress/Bar';
 import { Touchable } from "react-native-web";
 
+console.log("hello ")
 
 
 const HomeScreen = (props) => {
