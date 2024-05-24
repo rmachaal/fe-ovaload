@@ -1,14 +1,38 @@
 import React from "react";
-import { View, Text, Image, StyleSheet } from "react-native";
+import { View, Text, Image, StyleSheet, FlatList, TouchableOpacity} from "react-native";
+import { UserContext } from "../contexts/UserContext"
+import { Card } from "react-native-elements"
+import { getExercises } from "../../api";
 
 const Exercises = () => {
+
+  const [exercises, setExercises] = useState([])
+  const {username} = useContext(UserContext)
+
+  // useEffect(() => {
+  //   getExercises(username).then((res) => {
+  //     setExercises(res.data)
+  //   })
+  //   .catch(err){
+  //   console.error(err)
+  //  }
+  // }, [])
+
   return (
     <View style={styles.container}>
       <Image
         source={require("../../assets/placeholder_logo.jpeg")}
         style={styles.logo}
       />
-      <Text>Notifications Screen</Text>
+      <Text>My Exercises</Text>
+      <FlatList data={[
+        {key: "laurie"},
+        {key: "harry"},
+        {key: "rahaf"},
+        {key: "angela"}
+      ]}
+      renderItem={({item}) => <Text style={styles.item}>{item.key}</Text>}
+      />
     </View>
   );
 };
