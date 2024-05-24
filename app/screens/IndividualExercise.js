@@ -13,8 +13,6 @@ import {
 import ProgressBar from 'react-native-progress/Bar';
 import { Touchable } from "react-native-web";
 
-
-
 const HomeScreen = (props) => {
   const [progress, setProgress] = useState(0);
   const handlePress = () => {

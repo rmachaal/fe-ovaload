@@ -27,18 +27,22 @@ export function getExerciseById(username, exerciseId) {
 }
 
 export function getExerciseByDate(username, date) {
-  return axios
-    .get(`https://ovaload-be.onrender.com/api/${username}/exercises/${date}`)
+    return axios
+      .get(`https://ovaload-be.onrender.com/api/${username}/exercises/${date}`)
+    .then((res) => {
+        return res.data.exercisesByDate;
+      })
     .catch((err) => {
       console.log(err);
     });
 }
 
 export function getPlannedExerciseByDate(username, date) {
-  return axios
-    .get(
-      `https://ovaload-be.onrender.com/api/${username}/plannedExercises/${date}`
-    )
+    return axios
+     .get(`https://ovaload-be.onrender.com/api/${username}/plannedExercises/${date}`)
+    .then((res) => {
+        return res.data.plannedExercisesByDate;
+      })
     .catch((err) => {
       console.log(err);
     });
