@@ -6,7 +6,7 @@ import IndividualExercisePage from "./app/screens/IndividualExercise";
 const App = () => {
   return(<UserProvider>
     <TabNavigator />
-    <Route path="/:user/:exercise/" element={ <IndividualExercisePage/>} />
+    {/* <Route path="/:user/:exercise/" element={ <IndividualExercisePage/>} /> */}
   </UserProvider>)
 };
 

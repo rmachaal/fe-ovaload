@@ -27,22 +27,24 @@ export function getExerciseById(username, exerciseId) {
 }
 
 export function getExerciseByDate(username, date) {
-    return axios
-      .get(`https://ovaload-be.onrender.com/api/${username}/exercises/${date}`)
+  return axios
+    .get(`https://ovaload-be.onrender.com/api/${username}/exercises/${date}`)
     .then((res) => {
-        return res.data.exercisesByDate;
-      })
+      return res.data.exercisesByDate;
+    })
     .catch((err) => {
       console.log(err);
     });
 }
 
 export function getPlannedExerciseByDate(username, date) {
-    return axios
-     .get(`https://ovaload-be.onrender.com/api/${username}/plannedExercises/${date}`)
+  return axios
+    .get(
+      `https://ovaload-be.onrender.com/api/${username}/plannedExercises/${date}`
+    )
     .then((res) => {
-        return res.data.plannedExercisesByDate;
-      })
+      return res.data.plannedExercisesByDate;
+    })
     .catch((err) => {
       console.log(err);
     });
@@ -116,6 +118,17 @@ export function getFriendsScores(user) {
     .get(`https://ovaload-be.onrender.com/api/leaderboard/friends/${user}`)
     .then((response) => {
       return response.data.leaderboardData;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+}
+
+export function getChatbotMessage(user) {
+  return axios
+    .get(`https://be-ovaload.onrender.com/api/chatbot/${user}`)
+    .then((response) => {
+      return response.data.message;
     })
     .catch((err) => {
       console.log(err);
