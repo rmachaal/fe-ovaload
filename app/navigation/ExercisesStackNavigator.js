@@ -9,9 +9,9 @@ const Stack = createStackNavigator();
 const ExercisesStackNavigator = () => {
   return (
 
-      <Stack.Navigator initialRouteName="Exercises">
-        <Stack.Screen name="Exercises" component={Exercises} />
-        <Stack.Screen name="IndividualExercise" component={IndividualExercise} />
+    <Stack.Navigator initialRouteName="Exercises" >
+    <Stack.Screen name="Exercises" component={Exercises} options={{ headerShown: false }}/>
+        <Stack.Screen name="IndividualExercise" component={IndividualExercise} options={{ headerShown: false }}/>
       </Stack.Navigator>
 
   );
