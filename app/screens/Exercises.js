@@ -130,12 +130,10 @@ const Exercises = () => {
 
   return (
     <View style={styles.container}>
-     <View>
       <Image
         source={require("../../assets/placeholder_logo.jpeg")}
         style={styles.logo}
       />
-      <Text style={styles.headerText}>My Exercises</Text>
       <Text style={styles.headerText}>My Exercises</Text>
       <FlatList
         data={exercises}
@@ -150,8 +148,6 @@ const Exercises = () => {
               data={item.exerciseStats}
               keyExtractor={(stat) => stat._id}
               renderItem={({ item: stat }) => (
-          <View style={styles.item}>
-            <Text style={styles.title}>{item.exerciseName}</Text>       
                 <View style={styles.stats}>
                   <Text style={styles.text}>Weight: {stat.weightKg} kg</Text>
                   <Text style={styles.text}>Sets: {stat.sets}</Text>

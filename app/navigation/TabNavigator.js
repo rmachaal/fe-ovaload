@@ -10,13 +10,10 @@ import { NavigationContainer } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import { StyleSheet } from "react-native";
 
-
-
 const Tab = createBottomTabNavigator();
 
 const TabNavigator = () => {
   return (
-    <NavigationContainer>
       <Tab.Navigator
         screenOptions={({ route }) => ({
           tabBarIcon: ({ focused, color, size }) => {
@@ -44,7 +41,6 @@ const TabNavigator = () => {
         <Tab.Screen name="Exercises" component={ExercisesStackNavigator} />
         <Tab.Screen name="Leaderboard" component={Leaderboard} />
       </Tab.Navigator>
-    </NavigationContainer>
   );
 };
 
