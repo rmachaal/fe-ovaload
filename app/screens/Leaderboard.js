@@ -30,7 +30,7 @@ const Leaderboard = () => {
         const data = await getFriendsScores(username);
         setLeaderboardData(data);
       } catch (error) {
-        console.error("Error fetching leaderboard data:", error);
+        console.error("Error fetching leaderboard data", error);
       } finally {
         setLoading(false);
       }
