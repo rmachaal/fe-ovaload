@@ -1,13 +1,16 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { NavigationContainer } from "@react-navigation/native";
+
 import HomeScreen from "../screens/HomeScreen";
-import Progress from "../screens/Progress";
-// import Exercises from "../screens/Exercises.js";
-import Leaderboard from "../screens/Leaderboard.js";
+import Leaderboard from "../screens/Leaderboard";
+import ProgressStackNavigator from "./ProgressStackNavigator";
+import ExercisesStackNavigator from "./ExercisesStackNavigator.js";
+
+import { NavigationContainer } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import { StyleSheet } from "react-native";
-import ExercisesStackNavigator from "./ExercisesStackNavigator.js";
+
+
 
 const Tab = createBottomTabNavigator();
 
@@ -37,13 +40,14 @@ const TabNavigator = () => {
         }}
       >
         <Tab.Screen name="Home" component={HomeScreen} />
-        <Tab.Screen name="Progress" component={Progress} />
+        <Tab.Screen name="Progress" component={ProgressStackNavigator} />
         <Tab.Screen name="Exercises" component={ExercisesStackNavigator} />
         <Tab.Screen name="Leaderboard" component={Leaderboard} />
       </Tab.Navigator>
     </NavigationContainer>
   );
 };
+
 
 const styles = StyleSheet.create({
   tabBar: {
