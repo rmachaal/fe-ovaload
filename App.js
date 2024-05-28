@@ -1,11 +1,19 @@
 import React from "react";
 import TabNavigator from "./app/navigation/TabNavigator";
+import { NavigationContainer } from "@react-navigation/native";
 import UserProvider from "./app/contexts/UserContext";
+import { ExerciseAddedProvider } from "./app/contexts/ExerciseAddedContext";
 
 const App = () => {
-  return(<UserProvider>
-    <TabNavigator />
-  </UserProvider>)
+  return (
+    <ExerciseAddedProvider>
+      <UserProvider>
+        <NavigationContainer>
+          <TabNavigator />
+        </NavigationContainer>
+      </UserProvider>
+    </ExerciseAddedProvider>
+  );
 };
 
 export default App;

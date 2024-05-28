@@ -39,7 +39,7 @@ const Leaderboard = () => {
   }, [username]);
 
   if (loading) {
-    return <ActivityIndicator size="large" color="#7F00FF" />;
+    return <ActivityIndicator size="xlarge" color="#7F00FF" />;
   }
 
   return (

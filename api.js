@@ -48,26 +48,34 @@ export function getPlannedExerciseByDate(username, date) {
     });
 }
 
-export function postPlannedExercise(username, plannedExercise) {
-  return axios
-    .post(`https://ovaload-be.onrender.com/api/${username}/plannedExercises`, {
-      plannedExercise,
-    }) /// unsure on this key value pair
-    .catch((err) => {
-      console.log(err);
-    });
+export async function postPlannedExercise(username, plannedExercises) {
+  try {
+    const response = await axios.post(`https://ovaload-be.onrender.com/api/${username}/plannedExercises`, 
+      plannedExercises, 
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+    console.log("from postPlannedExercise" , response.data)
+    return response.data;
+  } catch (err) {
+    console.error('Error:', err.response ? err.response.data : err.message);
+    throw err;
+  }
 }
 
 export function patchPlannedExercise(
   username,
   date,
   exerciseName,
-  newPlannedExercise
+  completedChallenge
 ) {
   return axios
     .patch(
       `https://ovaload-be.onrender.com/api/${username}/plannedExercises/${date}/${exerciseName}`,
-      { plannedExercise: newPlannedExercise }
+      completedChallenge
     )
     .catch((err) => {
       console.log(err);
