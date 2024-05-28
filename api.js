@@ -58,7 +58,6 @@ export async function postPlannedExercise(username, plannedExercises) {
         },
       }
     );
-    console.log("from postPlannedExercise" , response.data)
     return response.data;
   } catch (err) {
     console.error('Error:', err.response ? err.response.data : err.message);
@@ -82,15 +81,23 @@ export function patchPlannedExercise(
     });
 }
 
-export function postExerciseStats(username, exerciseName, newExerciseStats) {
-  return axios
-    .post(
-      `https://ovaload-be.onrender.com/api/${username}/exercises/${exerciseName}`,
-      { exerciseStats: newExerciseStats }
-    )
-    .catch((err) => {
-      console.log(err);
-    });
+export async function postExerciseStats(username, exerciseName, newExerciseStats) {
+  console.log(username, exerciseName, newExerciseStats)
+  try {
+    const response = await axios.post(`https://ovaload-be.onrender.com/api/${username}/exercises/${exerciseName}`, 
+    newExerciseStats, 
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+    console.log(response)
+    return response.data;
+  } catch (err) {
+    console.error('Error:', err.response ? err.response.data : err.message);
+    throw err;
+  }
 }
 
 export function patchNewFriendByUsername(username) {

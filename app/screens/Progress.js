@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { View, StyleSheet, ActivityIndicator } from 'react-native';
 import { UserContext } from '../contexts/UserContext';
 import Calendar from '../Components/Calendar';
@@ -12,22 +12,32 @@ const Progress = ({ navigation }) => {
   const { username } = useContext(UserContext);
   
   useEffect(() => {
+    let isMounted = true; // flag to check if component is still mounted
     const fetchChallenges = async () => {
       setLoading(true);
       try {
         const data = selectedDate > new Date().setHours(0, 0, 0, 0)
           ? await getPlannedExerciseByDate(username, selectedDate)
           : await getExerciseByDate(username, selectedDate);
-        setChallenges(data);
+        if (isMounted) {
+          setChallenges(data);
+        }
       } catch (error) {
         console.error("Error fetching challenges:", error);
       } finally {
-        setLoading(false);
+        if (isMounted) {
+          setLoading(false);
+        }
       }
     };
-
+  
     fetchChallenges();
+  
+    return () => {
+      isMounted = false; 
+    };
   }, [selectedDate, username]);
+  
 
   return (
     <View style={styles.container}>

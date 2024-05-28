@@ -1,34 +1,20 @@
-import { useState, useEffect } from "react";
-import { View, StyleSheet} from "react-native";
-import CalendarStrip from "react-native-calendar-strip";
+import React, { useMemo } from 'react';
+import { View, StyleSheet } from 'react-native';
+import CalendarStrip from 'react-native-calendar-strip';
+import moment from 'moment';
 
-const Calendar = ({
-  selectedDate,
-  onDateSelect,
-}) => {
-
-  const today = new Date();
+const Calendar = React.memo(({ selectedDate, onDateSelect }) => {
+  const today = moment();
   
   const handleDateSelect = (date) => {
-    onDateSelect(new Date(date));
+    onDateSelect(date);
   };
-
-  const markedDates = [
+  const markedDates = useMemo(() => [
     {
       date: today,
-      customStyles: {
-        container: {
-          borderColor: "#7F00FF",
-          borderWidth: 2,
-          borderRadius: 20,
-        },
-        text: {
-          color: "black",
-          fontWeight: "bold",
-        },
-      },
+      lines:[{color:"#7F00FF"}]
     },
-  ];
+  ], [today]);
 
   return (
     <View style={styles.container}>
@@ -39,10 +25,11 @@ const Calendar = ({
           duration: 200,
           highlightColor: "#7F00FF",
         }}
-        style={{ height: 100, width: 380 }}
+        style={{ height: 100, width: 370 }}
         calendarHeaderPosition="above"
         onDateSelected={handleDateSelect}
         selectedDate={selectedDate}
+        renderDate={(date) => renderCustomDate(date)} 
         markedDates={markedDates}
         dateNumberStyle={{ color: "black" }}
         dateNameStyle={{ color: "black" }}
@@ -51,21 +38,12 @@ const Calendar = ({
       />
     </View>
   );
-};
+});
 
 const styles = StyleSheet.create({
   container: {
-    marginBottom: 20,
+    marginBottom: 10,
     alignItems: "center",
-  },
-  navText: {
-    fontSize: 16,
-    color: "#8F87A1",
-  },
-  currentDate: {
-    fontSize: 18,
-    fontWeight: "bold",
-    color: "#7F00FF",
   },
 });
 
