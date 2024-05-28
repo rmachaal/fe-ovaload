@@ -126,9 +126,9 @@ export function getFriendsScores(user) {
 
 export function getChatbotMessage(user) {
   return axios
-    .get(`https://be-ovaload.onrender.com/api/chatbot/${user}`)
+    .get(`https://ovaload-be.onrender.com/api/chatbot/${user}`)
     .then((response) => {
-      return response.data.message;
+      return response.data;
     })
     .catch((err) => {
       console.log(err);
