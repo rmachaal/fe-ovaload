@@ -10,7 +10,7 @@ const ExercisesStackNavigator = () => {
   return (
 
       <Stack.Navigator initialRouteName="Exercises">
-        <Stack.Screen name="Exercises" component={Exercises} />
+        <Stack.Screen name="Exercises" component={Exercises}/>
         <Stack.Screen name="IndividualExercise" component={IndividualExercise} />
       </Stack.Navigator>
 

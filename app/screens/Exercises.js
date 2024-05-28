@@ -105,17 +105,16 @@
 // export default Exercises;
 
 import React, { useState, useContext, useEffect } from "react";
-import { View, Text, Image, StyleSheet, FlatList, TouchableOpacity } from "react-native";
+import { View, Text, Image, StyleSheet, FlatList, TouchableOpacity, Button } from "react-native";
 import { UserContext } from "../contexts/UserContext";
 import { getExercises } from "../../api"; // Make sure this is the correct path
 import { useNavigation } from "@react-navigation/native";
 
-
 const Exercises = () => {
   const [exercises, setExercises] = useState([]);
   const { username } = useContext(UserContext);
+  const [latestStats, setLatestStats] = useState({})
   const navigation = useNavigation();
-
 
   useEffect(() => {
     getExercises(username)
@@ -127,51 +126,50 @@ const Exercises = () => {
       });
   }, [username]);
 
+  // const getLatestStats = (exercises) => {
+  //     let latestDate = 
+  //     exercises.forEach((exercise) => {
+  //     const latestStats = exercise.exerciseStats.map((stats) => {
+  //       if (stats.createdAt)
+  //     })
+  //   })
+  // }
+
+  const formatExerciseName = (name) => {
+    return name
+      .split('-')
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ');
+  };  
 
   return (
     <View style={styles.container}>
-     <View>
-      <Image
-        source={require("../../assets/placeholder_logo.jpeg")}
-        style={styles.logo}
-      />
-      <Text style={styles.headerText}>My Exercises</Text>
-      <Text style={styles.headerText}>My Exercises</Text>
+      <Text style={styles.headerText}>My Exercises</Text> 
       <FlatList
         data={exercises}
         keyExtractor={(item) => item._id}
         renderItem={({ item }) => (
+          <View style={styles.buttons}>
           <TouchableOpacity
             onPress={() => navigation.navigate('IndividualExercise', { exercise: item })}
             style={styles.item}
           >
-            <Text style={styles.title}>{item.exerciseName}</Text>
-            <FlatList
-              data={item.exerciseStats}
-              keyExtractor={(stat) => stat._id}
-              renderItem={({ item: stat }) => (
-          <View style={styles.item}>
-            <Text style={styles.title}>{item.exerciseName}</Text>       
-                <View style={styles.stats}>
-                  <Text style={styles.text}>Weight: {stat.weightKg} kg</Text>
-                  <Text style={styles.text}>Sets: {stat.sets}</Text>
-                  <Text style={styles.text}>Reps: {stat.reps}</Text>
-                </View>
-              )}
-            />
+          <Text style={styles.title}>{formatExerciseName(item.exerciseName)}</Text>
+          <Text style={styles.text}>Current Stats</Text>
+          {/* <Text>{item.exerciseStats[item.exerciseStats.length-1]}</Text> */}
           </TouchableOpacity>
+          </View>
         )}
       />
     </View>
   );
 };
-
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: 50,
     paddingHorizontal: 20,
+    padding: 20,
   },
   logo: {
     width: 100,
@@ -188,9 +186,16 @@ const styles = StyleSheet.create({
     padding: 10,
     marginVertical: 8,
     backgroundColor: "#F9C2FF",
+    width: 350,
+    alignItems: "left",
+    paddingLeft: 100,
+    backgroundColor: "rgba(189, 181, 213, 0.25)",
+    borderRadius: 16
   },
   title: {
     fontSize: 20,
+    textAlign: "center",
+    color: "#7F00FF",
   },
   stats: {
     paddingLeft: 10,
@@ -198,6 +203,14 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 16,
+    alignItems: "left",
+    color: "#7F00FF"
   },
+  buttons: {
+    flex: 1,
+    paddingBottom: 20,
+    alignItems: "center",
+    flexDirection: "row",
+  }
 });
 export default Exercises;
