@@ -277,19 +277,80 @@
 // export default IndividualExercise;
 
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, Dimensions } from "react-native";
+import { LineChart } from "react-native-chart-kit";
+
+const formatExerciseName = (name) => {
+  return name
+    .split('-')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+};
+
 
 const IndividualExercise = ({ route }) => {
   const { exercise } = route.params;
 
+
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>{exercise.exerciseName}</Text>
+      <LineChart
+        data={{
+          labels: exercise.exerciseStats.map((stat) =>
+            new Date(stat.createdAt).toLocaleDateString()
+          ),
+          datasets: [
+            {
+              data: exercise.exerciseStats.map((stat) => stat.weightKg),
+            },
+          ],
+        }}
+          width={360}
+          height={220}
+          yAxisLabel=""
+          yAxisSuffix="kg"
+          yAxisInterval={1}
+          chartConfig={{
+            backgroundColor: "#C3B1E1",
+            backgroundGradientFrom: "#C3B1E1",
+            backgroundGradientTo: "#C3B1E1",
+            decimalPlaces: 0,
+            color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+            labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+            style: {
+              borderRadius: 16,
+            },
+            propsForDots: {
+              r: "6",
+              strokeWidth: "2",
+              stroke: "#ffc300",
+            },
+          }}
+          bezier
+          style={{
+            marginVertical: 8,
+            borderRadius: 16,
+          }}
+        />
+      <Text style={styles.title}>{formatExerciseName(exercise.exerciseName)}</Text>
       {exercise.exerciseStats.map((stat, index) => (
         <View key={index} style={styles.statItem}>
-          <Text style={styles.text}>Weight: {stat.weightKg} kg</Text>
-          <Text style={styles.text}>Sets: {stat.sets}</Text>
-          <Text style={styles.text}>Reps: {stat.reps}</Text>
+          <View>
+          <Text style={styles.text}>Weight</Text>
+          <Text style={styles.text2}>{stat.weightKg} kg</Text>
+          </View>
+          <View>
+          <Text style={styles.text}>Sets</Text>
+          <Text style={styles.text2}>{stat.sets}</Text>
+          </View>
+          <View>
+          <Text style={styles.text}>Reps</Text>
+          <Text style={styles.text2}>{stat.reps}</Text>
+          </View>
+          <View>
+          <Text style={styles.text}>Date</Text>
+          <Text style={styles.text2}>{new Date(stat.createdAt).toLocaleDateString()}</Text>
+          </View>
         </View>
       ))}
     </View>
@@ -299,20 +360,36 @@ const IndividualExercise = ({ route }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
+    alignItems: "center",
+    paddingTop: 20,
+    backgroundColor: "#fff",
   },
   title: {
     fontSize: 24,
     fontWeight: "bold",
     marginBottom: 20,
+    marginTop: 20,
+    color: "#7F00FF",
   },
   statItem: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    width: 375,
+    marginBottom: 10,
+    backgroundColor: "rgba(189, 181, 213, 0.25)",
+    borderRadius: 10,
+    margin: 10,
     padding: 10,
-    marginVertical: 5,
-    backgroundColor: "#f1f1f1",
   },
   text: {
-    fontSize: 18,
+    fontSize: 16,
+    justifyContent: "space-around"
+  },
+  text2: {
+    fontSize: 20,
+    fontWeight: "600",
+    color:"#7F00FF"
   },
 });
 
