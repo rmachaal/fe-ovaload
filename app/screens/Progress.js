@@ -1,41 +1,78 @@
-import React, { useState, useContext } from 'react';
-import { View, StyleSheet } from 'react-native';
+import React, { useState, useContext, useEffect } from 'react';
+import { View, StyleSheet, ActivityIndicator } from 'react-native';
 import { UserContext } from '../contexts/UserContext';
 import Calendar from '../Components/Calendar';
 import Challenges from '../Components/Challenges';
-import { LinearGradient } from "expo-linear-gradient";
+import { getExerciseByDate, getPlannedExerciseByDate } from '../../api';
 
-const Progress = () => {
-  const date = new Date();
-  const [year, setYear] = useState(date.getFullYear());
-  const [month, setMonth] = useState(date.getMonth());
+const Progress = ({ navigation }) => {
   const [selectedDate, setSelectedDate] = useState(new Date());
-
+  const [loading, setLoading] = useState(true);
+  const [challenges, setChallenges] = useState([]);
   const { username } = useContext(UserContext);
+  
+  useEffect(() => {
+    let isMounted = true; // flag to check if component is still mounted
+    const fetchChallenges = async () => {
+      setLoading(true);
+      try {
+        const data = selectedDate > new Date().setHours(0, 0, 0, 0)
+          ? await getPlannedExerciseByDate(username, selectedDate)
+          : await getExerciseByDate(username, selectedDate);
+        if (isMounted) {
+          setChallenges(data);
+        }
+      } catch (error) {
+        console.error("Error fetching challenges:", error);
+      } finally {
+        if (isMounted) {
+          setLoading(false);
+        }
+      }
+    };
+    
+    fetchChallenges();
+    return () => {
+      isMounted = false; 
+    };
+  }, [selectedDate, username]);
+  
 
   return (
-    <LinearGradient
-    colors={["#c44532", "#862a57", "#32081f"]}
-  >
     <View style={styles.container}>
       <Calendar
-        year={year}
-        month={month}
-        setYear={setYear}
-        setMonth={setMonth}
-        date={date}
         onDateSelect={setSelectedDate}
         selectedDate={selectedDate}
       />
-      <Challenges selectedDate={selectedDate} />
+      <View style={styles.contentContainer}>
+        <View style={styles.challengesContainer}>
+          {loading ? (
+            <ActivityIndicator size="large" color="#7F00FF" />
+          ) : (
+            <Challenges
+              navigation={navigation}
+              selectedDate={selectedDate}
+              challenges={challenges}
+              setChallenges={setChallenges}
+            />
+          )}
+        </View>
+      </View>
     </View>
-    </LinearGradient>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     padding: 20,
+  },
+  contentContainer: {
+    flexDirection: 'row',
+    flex: 1,
+  },
+  challengesContainer: {
+    flex: 1,
   },
 });
 

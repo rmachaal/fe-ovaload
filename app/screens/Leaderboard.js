@@ -30,7 +30,7 @@ const Leaderboard = () => {
         const data = await getFriendsScores(username);
         setLeaderboardData(data);
       } catch (error) {
-        console.error("Error fetching leaderboard data:", error);
+        console.error("Error fetching leaderboard data", error);
       } finally {
         setLoading(false);
       }
@@ -39,7 +39,7 @@ const Leaderboard = () => {
   }, [username]);
 
   if (loading) {
-    return <ActivityIndicator size="large" color="#7F00FF" />;
+    return <ActivityIndicator size="xlarge" color="#7F00FF" />;
   }
 
   return (
