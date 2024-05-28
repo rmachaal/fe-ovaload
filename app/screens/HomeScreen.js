@@ -21,8 +21,6 @@ import { Touchable } from "react-native-web";
 import ChatBot from "../Components/ChatBot";
 import { UserContext } from "../contexts/UserContext";
 
-console.log("hello ");
-
 const HomeScreen = (props) => {
   const { username } = useContext(UserContext);
   const [progress, setProgress] = useState(0);
@@ -32,19 +30,15 @@ const HomeScreen = (props) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Welcome back {username}!</Text>
+      <View style={styles.user}>
+        <Image
+          source={require("../../assets/userprofpic.png")}
+          style={styles.profilePic}
+        />
+        <Text style={styles.header}>Welcome back {username}!</Text>
+      </View>
       <ChatBot />
       <Text style={styles.subHeading}>Today's Challenges:</Text>
-      <ProgressBar
-        progress={progress}
-        width={387}
-        height={20}
-        color="#C3B1E1"
-        borderWidth={2}
-        borderRadius={16}
-      />
-      <Button onPress={handlePress} title="Increase progress" />
-      <Text>Progress: {(progress * 100).toFixed(0)}%</Text>
     </View>
   );
 };
@@ -57,15 +51,14 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
   },
   header: {
-    fontSize: 45,
+    fontSize: 40,
     fontWeight: "bold",
     color: "#7F00FF",
     marginBottom: 25,
     textAlign: "center",
-    width: "100%",
-    paddingBottom: 20,
     borderBottomColor: "#DDDDDD",
     borderBottomWidth: 0.5,
+    paddingBottom: 10,
   },
   subHeading: {
     fontSize: 30,
@@ -73,6 +66,18 @@ const styles = StyleSheet.create({
     color: "#7F00FF",
     marginBottom: 25,
     textAlign: "left",
+  },
+  user: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  profilePic: {
+    width: 75,
+    height: 75,
+    borderRadius: 50,
+    resizeMode: "cover",
+    marginRight: 10,
+    marginTop: 10,
   },
 });
 
