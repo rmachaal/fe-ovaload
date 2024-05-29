@@ -80,7 +80,7 @@ const Leaderboard = () => {
           const image = imageMap[index];
           return (
             <View style={styles.tableRow}>
-              <Text style={styles.text}>{index + 1}</Text>
+              <Text style={styles.text}>#{index + 1}</Text>
               <View style={styles.userImageName}>
                 <View>
                   <Image source={image} style={styles.userImage} />
@@ -163,13 +163,13 @@ const styles = StyleSheet.create({
   userImageName: {
     flexDirection: "column",
     alignItems: "center",
-    paddingRight: 30,
+    paddingRight: 35,
   },
   text: {
     fontSize: 23,
     fontWeight: "600",
     color: "#7F00FF",
-    paddingRight: 60,
+    paddingRight: 55,
   },
   score: {
     fontSize: 23,
