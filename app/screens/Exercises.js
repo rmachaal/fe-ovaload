@@ -1,4 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
+
 import { View, Text, StyleSheet, FlatList, TouchableOpacity } from "react-native";
 import { UserContext } from "../contexts/UserContext";
 import { getExercises } from "../../api"; 
@@ -18,6 +19,7 @@ const formatDate = (date) => {
 const Exercises = () => {
   const [exercises, setExercises] = useState([]);
   const { username } = useContext(UserContext);
+  const [latestStats, setLatestStats] = useState({})
   const navigation = useNavigation();
 
   useEffect(() => {
@@ -137,5 +139,4 @@ const styles = StyleSheet.create({
     color: "#7F00FF",
   },
 });
-
 export default Exercises;

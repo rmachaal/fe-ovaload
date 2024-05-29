@@ -94,7 +94,7 @@ export async function postExerciseStats(username, exerciseName, newExerciseStats
         },
       }
     );
-    console.log(response)
+    console.log("from postStat func",response)
     return response.data;
   } catch (err) {
     console.error('Error:', err.response ? err.response.data : err.message);

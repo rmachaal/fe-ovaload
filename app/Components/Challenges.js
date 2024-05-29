@@ -9,10 +9,9 @@ import {
 } from "react-native";
 import CheckBox from "expo-checkbox";
 import { UserContext } from "../contexts/UserContext";
-import { useExerciseAdded } from "../contexts/ExerciseAddedContext";
-import { getExerciseByDate, getPlannedExerciseByDate, patchPlannedExercise, postExerciseStats } from "../../api";
+import { getExerciseByDate, getPlannedExerciseByDate, patchPlannedExercise, postExerciseStats, patchLeaderboardScore } from "../../api";
 import moment from "moment-timezone";
-import Icon from "react-native-vector-icons/Ionicons"; // Make sure to install and import the correct icon library
+import Icon from "react-native-vector-icons/Ionicons";
 
 const Challenges = ({ navigation, selectedDate }) => {
   const [loading, setLoading] = useState(true);
@@ -26,17 +25,20 @@ const Challenges = ({ navigation, selectedDate }) => {
     try {
       const selectedDateObj = moment.tz(selectedDate, timeZone).startOf("day");
       let data = [];
-
+  
       if (selectedDateObj.isBefore(moment.tz(timeZone).startOf("day"))) {
         const response = await getExerciseByDate(
           username,
           selectedDateObj.format("YYYY-MM-DD")
         );
         if (response) {
-          data = response.map((exercise) => ({
-            ...exercise,
-            exerciseStats: [exercise.exerciseStats[0]], // Only include the first exercise stat
-          }));
+          data = response.map((exercise) => {
+            const mostRecentStat = exercise.exerciseStats.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))[0];
+            return {
+              ...exercise,
+              exerciseStats: [mostRecentStat], // Only include the most recent exercise stat
+            };
+          });
         }
       } else if (selectedDateObj.isAfter(moment.tz(timeZone).endOf("day"))) {
         const response = await getPlannedExerciseByDate(
@@ -61,31 +63,40 @@ const Challenges = ({ navigation, selectedDate }) => {
           const plannedExercises = plannedResponse.filter(
             (exercise) => !exercise.completed
           );
-          const exerciseData = exercisesResponse.map((exercise) => ({
-            ...exercise,
-            exerciseStats: [exercise.exerciseStats[0]],
-          }));
+          const exerciseData = exercisesResponse.map((exercise) => {
+            const mostRecentStat = exercise.exerciseStats.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))[0];
+            return {
+              ...exercise,
+              exerciseStats: [mostRecentStat], // Only include the most recent exercise stat
+            };
+          });
           const plannedData = plannedExercises.map((challenge) => ({
             ...challenge,
             nextChallenge: [challenge.nextChallenge[0]],
           }));
-
+  
           data = [...exerciseData, ...plannedData];
         } else if (plannedResponse) {
-          const plannedData = plannedResponse.map((challenge) => ({
+          const plannedExercises = plannedResponse.filter(
+            (exercise) => !exercise.completed
+          );
+  
+          const plannedData = plannedExercises.map((challenge) => ({
             ...challenge,
             nextChallenge: [challenge.nextChallenge[0]],
           }));
           data = [...data, ...plannedData];
         } else if (exercisesResponse) {
-          const exerciseData = exercisesResponse.map((exercise) => ({
-            ...exercise,
-            exerciseStats: [exercise.exerciseStats[0]],
-          }));
+          const exerciseData = exercisesResponse.map((exercise) => {
+            const mostRecentStat = exercise.exerciseStats.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))[0];
+            return {
+              ...exercise,
+              exerciseStats: [mostRecentStat], // Only include the most recent exercise stat
+            };
+          });
           data = [...data, ...exerciseData];
         }
       }
-
       setExercises(data);
     } catch (error) {
       console.error("Error fetching exercises:", error);
@@ -93,7 +104,7 @@ const Challenges = ({ navigation, selectedDate }) => {
       setLoading(false);
     }
   };
-
+  
   useEffect(() => {
     fetchChallenges();
   }, [setExercises, selectedDate]);
@@ -121,22 +132,24 @@ const Challenges = ({ navigation, selectedDate }) => {
       });
 
       const exercise = exercises.find(
-        (e) => e.exerciseName === exerciseName && e.date === date
+        (e) => e.exerciseName === exerciseName.toLowerCase().replace(/ /g, '-')
       );
-      if (exercise && exercise.nextChallenge) {
+
+      if (exercise && exercise.nextChallenge) { 
+        console.log("exercise.nextChallenges",exercise.nextChallenge[0])
         const newExerciseStats = {
           weightKg: exercise.nextChallenge[0].weightKg,
           sets: exercise.nextChallenge[0].sets,
           reps: exercise.nextChallenge[0].reps,
         };
         await postExerciseStats(username, exerciseName, newExerciseStats);
+        await patchLeaderboardScore(username, 2);
       }
       fetchChallenges();
     } catch (error) {
       console.error("Error marking exercise as completed:", error);
     }
   };
-
 
   // Function to render each item in the FlatList
   const renderItem = ({ item }) => {

@@ -30,9 +30,8 @@ const Progress = ({ navigation }) => {
         }
       }
     };
-  
+    
     fetchChallenges();
-  
     return () => {
       isMounted = false; 
     };
