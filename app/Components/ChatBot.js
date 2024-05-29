@@ -45,7 +45,11 @@ const ChatBot = () => {
       />
       <View style={styles.mascotContainer}>
         <Text style={styles.mascotTitle}>Jim Rat </Text>
-        <Ionicons name="chatbubble" size={24} color="#7F00FF" />
+        <Ionicons
+          name="chatbubble-ellipses-outline"
+          size={27}
+          color="#7F00FF"
+        />
       </View>
       <Text style={styles.messageText}>{message}</Text>
       <FlatList
@@ -70,22 +74,22 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    width: "100%",
+    marginTop: 5,
   },
   messageText: {
     fontSize: 18,
-    fontWeight: "450",
+    fontWeight: "500",
     textAlign: "center",
     backgroundColor: "rgba(189, 181, 213, 0.25)",
-    padding: 10,
+    padding: 15,
     borderRadius: 10,
-    marginTop: 10,
+    marginTop: 5,
   },
   responseList: {
     flexDirection: "row",
-    flexWrap: "wrap",
-    alignItems: "center",
     justifyContent: "center",
-    padding: 10,
+    marginTop: 10,
   },
   responseButton: {
     padding: 10,
@@ -101,19 +105,18 @@ const styles = StyleSheet.create({
   mascotContainer: {
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: 5,
+    marginTop: 5,
+    marginBottom: 10,
   },
   mascot: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
-    objectFit: "cover",
-    marginTop: 10,
+    width: 80,
+    height: 80,
+    borderRadius: 40,
   },
   mascotTitle: {
     color: "#7F00FF",
-    fontSize: 25,
-    fontWeight: "300",
+    fontSize: 24,
+    fontWeight: "400",
   },
 });
 

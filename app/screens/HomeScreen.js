@@ -1,32 +1,11 @@
 import React, { useContext } from "react";
-import { useState } from "react";
-import {
-  View,
-  Text,
-  Image,
-  StyleSheet,
-  Dimensions,
-  Button,
-} from "react-native";
-import {
-  LineChart,
-  BarChart,
-  PieChart,
-  ProgressChart,
-  ContributionGraph,
-  StackedBarChart,
-} from "react-native-chart-kit";
-import ProgressBar from "react-native-progress/Bar";
-import { Touchable } from "react-native-web";
+import { View, Text, Image, StyleSheet } from "react-native";
 import ChatBot from "../Components/ChatBot";
 import { UserContext } from "../contexts/UserContext";
+import TodaysChallenges from "../Components/TodaysChallenges";
 
 const HomeScreen = (props) => {
   const { username } = useContext(UserContext);
-  const [progress, setProgress] = useState(0);
-  const handlePress = () => {
-    setProgress((prevProgress) => prevProgress + 0.1);
-  };
 
   return (
     <View style={styles.container}>
@@ -38,7 +17,7 @@ const HomeScreen = (props) => {
         <Text style={styles.header}>Welcome back {username}!</Text>
       </View>
       <ChatBot />
-      <Text style={styles.subHeading}>Today's Challenges:</Text>
+      <TodaysChallenges />
     </View>
   );
 };
@@ -46,34 +25,28 @@ const HomeScreen = (props) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
+    width: "100%",
     alignItems: "center",
     backgroundColor: "#fff",
-  },
-  header: {
-    fontSize: 40,
-    fontWeight: "bold",
-    color: "#7F00FF",
-    marginBottom: 25,
-    textAlign: "center",
-    borderBottomColor: "#DDDDDD",
-    borderBottomWidth: 0.5,
-    paddingBottom: 10,
-  },
-  subHeading: {
-    fontSize: 30,
-    fontWeight: "bold",
-    color: "#7F00FF",
-    marginBottom: 25,
-    textAlign: "left",
   },
   user: {
     flexDirection: "row",
     alignItems: "center",
   },
+  header: {
+    fontSize: 24,
+    fontStyle: "italic",
+    fontWeight: "400",
+    color: "#7F00FF",
+    marginTop: 30,
+    marginBottom: 20,
+    borderBottomColor: "#DDDDDD",
+    borderBottomWidth: 0.5,
+    paddingBottom: 10,
+  },
   profilePic: {
-    width: 75,
-    height: 75,
+    width: 55,
+    height: 55,
     borderRadius: 50,
     resizeMode: "cover",
     marginRight: 10,

@@ -6,23 +6,29 @@ import {
   StyleSheet,
   FlatList,
   ActivityIndicator,
+  TouchableOpacity,
+  TextInput,
 } from "react-native";
-import { getFriendsScores } from "../../api";
+import { getFriendsScores, patchNewFriendByUsername } from "../../api";
 import { UserContext } from "../contexts/UserContext";
 import { useContext } from "react";
+import { Ionicons } from "@expo/vector-icons";
 
 const imageMap = {
-  0: require("../../assets/leaderboard/level0.png"),
-  1: require("../../assets/leaderboard/level1.png"),
+  0: require("../../assets/userprofpic.png"),
+  1: require("../../assets/leaderboard/level3.png"),
   2: require("../../assets/leaderboard/level2.png"),
-  3: require("../../assets/leaderboard/level3.png"),
+  3: require("../../assets/leaderboard/level1.png"),
   4: require("../../assets/leaderboard/level4.png"),
 };
 
 const Leaderboard = () => {
   const { username } = useContext(UserContext);
   const [leaderboardData, setLeaderboardData] = useState([]);
+  const [friend, setFriend] = useState("");
   const [loading, setLoading] = useState(true);
+  const [inputLoading, setInputLoading] = useState(false);
+  const [showInput, setShowInput] = useState(false);
 
   useEffect(() => {
     async function fetchLeaderboardData() {
@@ -30,16 +36,34 @@ const Leaderboard = () => {
         const data = await getFriendsScores(username);
         setLeaderboardData(data);
       } catch (error) {
-        console.error("Error fetching leaderboard data:", error);
+        console.error("Error fetching leaderboard data", error);
       } finally {
         setLoading(false);
       }
     }
     fetchLeaderboardData();
-  }, [username]);
+  }, [username, friend]);
+
+  async function handleAddFriend() {
+    setShowInput(true);
+    if (friend.trim()) {
+      setInputLoading(true);
+      console.log("Adding friend:", friend);
+      try {
+        const response = await patchNewFriendByUsername(username, friend);
+        console.log("Friend added:", response.data);
+      } catch (error) {
+        console.error("Error adding friend:", error);
+      } finally {
+        setFriend("");
+        setInputLoading(false);
+        setShowInput(false);
+      }
+    }
+  }
 
   if (loading) {
-    return <ActivityIndicator size="xlarge" color="#7F00FF" />;
+    return <ActivityIndicator size="large" color="#7F00FF" />;
   }
 
   return (
@@ -57,14 +81,47 @@ const Leaderboard = () => {
           return (
             <View style={styles.tableRow}>
               <Text style={styles.text}>{index + 1}</Text>
-              <Image source={image} style={styles.levelImage} />
-              <Text style={styles.text}>{item.username}</Text>
-              <Text style={styles.text}>{item.score}</Text>
+              <View style={styles.userImageName}>
+                <View>
+                  <Image source={image} style={styles.userImage} />
+                </View>
+                <View>
+                  <Text style={styles.userName}>{item.username}</Text>
+                </View>
+              </View>
+              <Text style={styles.score}>{item.score}</Text>
             </View>
           );
         }}
         keyExtractor={(item, index) => index.toString()}
       />
+      <View style={styles.addFriendForm}>
+        {showInput ? (
+          <>
+            <TextInput
+              style={styles.addFriendInput}
+              placeholder="Enter your friend's username"
+              value={friend}
+              onChangeText={setFriend}
+            />
+            <TouchableOpacity
+              style={styles.addFriendButton}
+              onPress={handleAddFriend}
+              disabled={inputLoading}
+            >
+              <Ionicons name="person-add-outline" size={30} color="#fff" />
+            </TouchableOpacity>
+            {/* {inputLoading && <ActivityIndicator size="small" color="#7F00FF" />} */}
+          </>
+        ) : (
+          <TouchableOpacity
+            style={styles.addFriendButton}
+            onPress={() => setShowInput(true)}
+          >
+            <Ionicons name="person-add-outline" size={30} color="#fff" />
+          </TouchableOpacity>
+        )}
+      </View>
     </View>
   );
 };
@@ -73,14 +130,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    paddingTop: 20,
     backgroundColor: "#fff",
   },
   tabHeader: {
-    fontSize: 45,
+    fontSize: 35,
     fontWeight: "bold",
     color: "#7F00FF",
-    marginBottom: 25,
+    marginBottom: 15,
   },
   headerRow: {
     flexDirection: "row",
@@ -93,28 +149,67 @@ const styles = StyleSheet.create({
     color: "#8F87A1",
     fontSize: 18,
   },
+  userImage: {
+    width: 55,
+    height: 55,
+    borderRadius: 50,
+  },
+  userName: {
+    fontSize: 18,
+    fontWeight: "450",
+    fontStyle: "italic",
+    color: "#7F00FF",
+  },
+  userImageName: {
+    flexDirection: "column",
+    alignItems: "center",
+    paddingRight: 30,
+  },
+  text: {
+    fontSize: 23,
+    fontWeight: "600",
+    color: "#7F00FF",
+    paddingRight: 60,
+  },
+  score: {
+    fontSize: 23,
+    fontWeight: "600",
+    color: "#7F00FF",
+    width: 30,
+  },
   tableRow: {
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "space-evenly",
     alignItems: "center",
     width: 375,
-    height: 80,
+    height: 95,
+    paddingTop: 5,
     marginBottom: 10,
     backgroundColor: "rgba(189, 181, 213, 0.25)",
     borderRadius: 10,
-    margin: 10,
+  },
+  addFriendForm: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 20,
+    marginTop: 20,
+    width: "100%",
+    paddingHorizontal: 20,
+  },
+  addFriendInput: {
+    flex: 1,
+    borderWidth: 1,
+    borderColor: "#ccc",
     padding: 10,
+    borderRadius: 5,
+    marginRight: 10,
   },
-  levelImage: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    objectFit: "cover",
-  },
-  text: {
-    fontSize: 18,
-    fontWeight: "bold",
-    color: "#7F00FF",
+  addFriendButton: {
+    padding: 10,
+    borderRadius: 50,
+    backgroundColor: "#7F00FF",
+    alignItems: "center",
+    justifyContent: "center",
   },
 });
 
