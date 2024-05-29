@@ -52,17 +52,18 @@ export function getPlannedExerciseByDate(username, date) {
 
 export async function postPlannedExercise(username, plannedExercises) {
   try {
-    const response = await axios.post(`https://ovaload-be.onrender.com/api/${username}/plannedExercises`, 
-      plannedExercises, 
+    const response = await axios.post(
+      `https://ovaload-be.onrender.com/api/${username}/plannedExercises`,
+      plannedExercises,
       {
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
       }
     );
     return response.data;
   } catch (err) {
-    console.error('Error:', err.response ? err.response.data : err.message);
+    console.error("Error:", err.response ? err.response.data : err.message);
     throw err;
   }
 }
@@ -83,28 +84,35 @@ export function patchPlannedExercise(
     });
 }
 
-export async function postExerciseStats(username, exerciseName, newExerciseStats) {
-  console.log(username, exerciseName, newExerciseStats)
+export async function postExerciseStats(
+  username,
+  exerciseName,
+  newExerciseStats
+) {
+  console.log(username, exerciseName, newExerciseStats);
   try {
-    const response = await axios.post(`https://ovaload-be.onrender.com/api/${username}/exercises/${exerciseName}`, 
-    newExerciseStats, 
+    const response = await axios.post(
+      `https://ovaload-be.onrender.com/api/${username}/exercises/${exerciseName}`,
+      newExerciseStats,
       {
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
       }
     );
-    console.log("from postStat func",response)
+    console.log("from postStat func", response);
     return response.data;
   } catch (err) {
-    console.error('Error:', err.response ? err.response.data : err.message);
+    console.error("Error:", err.response ? err.response.data : err.message);
     throw err;
   }
 }
 
-export function patchNewFriendByUsername(username) {
+export function patchNewFriendByUsername(username, friend) {
   return axios
-    .patch(`https://ovaload-be.onrender.com/api/${username}/`)
+    .patch(`https://ovaload-be.onrender.com/api/friends/${username}`, {
+      username: friend,
+    })
     .catch((err) => {
       console.log(err);
     });
