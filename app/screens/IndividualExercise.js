@@ -122,6 +122,7 @@ const styles = StyleSheet.create({
   contentContainer: {
     padding: 20,
     alignItems: "center",
+    paddingTop: 40,
   },
   title: {
     fontSize: 24,
