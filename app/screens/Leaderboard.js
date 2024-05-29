@@ -6,16 +6,18 @@ import {
   StyleSheet,
   FlatList,
   ActivityIndicator,
+  TouchableOpacity,
 } from "react-native";
 import { getFriendsScores } from "../../api";
 import { UserContext } from "../contexts/UserContext";
 import { useContext } from "react";
+import { Ionicons } from "@expo/vector-icons";
 
 const imageMap = {
-  0: require("../../assets/leaderboard/level0.png"),
-  1: require("../../assets/leaderboard/level1.png"),
+  0: require("../../assets/userprofpic.png"),
+  1: require("../../assets/leaderboard/level3.png"),
   2: require("../../assets/leaderboard/level2.png"),
-  3: require("../../assets/leaderboard/level3.png"),
+  3: require("../../assets/leaderboard/level1.png"),
   4: require("../../assets/leaderboard/level4.png"),
 };
 
@@ -38,6 +40,10 @@ const Leaderboard = () => {
     fetchLeaderboardData();
   }, [username]);
 
+  // const handleAddFriend(){
+
+  // }
+
   if (loading) {
     return <ActivityIndicator size="xlarge" color="#7F00FF" />;
   }
@@ -57,14 +63,25 @@ const Leaderboard = () => {
           return (
             <View style={styles.tableRow}>
               <Text style={styles.text}>{index + 1}</Text>
-              <Image source={image} style={styles.levelImage} />
-              <Text style={styles.text}>{item.username}</Text>
+              <View style={styles.userInfo}>
+                <View style={styles.userImageContainer}>
+                  <Image source={image} style={styles.userImage} />
+                </View>
+                <Text style={styles.text}>{item.username}</Text>
+              </View>
               <Text style={styles.text}>{item.score}</Text>
             </View>
           );
         }}
         keyExtractor={(item, index) => index.toString()}
       />
+      <TouchableOpacity style={styles.button} >
+        <Ionicons
+          name="person-add-outline"
+          size={30}
+          color="rgb(255, 255, 255)"
+        />
+      </TouchableOpacity>
     </View>
   );
 };
@@ -93,28 +110,46 @@ const styles = StyleSheet.create({
     color: "#8F87A1",
     fontSize: 18,
   },
+  // userImageContainer: {
+  //   flex: 1,
+  //  flexDirection: "column",
+  // },
+  userImage: {
+    width: 60,
+    height: 60,
+    borderRadius: 50,
+    objectFit: "cover",
+    marginRight: 10,
+    resizeMode: "cover",
+  },
+  text: {
+    fontSize: 18,
+    fontWeight: "bold",
+    color: "#7F00FF",
+  },
   tableRow: {
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "space-around",
     alignItems: "center",
     width: 375,
-    height: 80,
+    height: 100,
     marginBottom: 10,
     backgroundColor: "rgba(189, 181, 213, 0.25)",
     borderRadius: 10,
     margin: 10,
     padding: 10,
   },
-  levelImage: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    objectFit: "cover",
+  userInfo: {
+    flexDirection: "row",
+    alignItems: "center",
   },
-  text: {
-    fontSize: 18,
-    fontWeight: "bold",
-    color: "#7F00FF",
+  button: {
+    position: "absolute",
+    bottom: 20,
+    right: 20,
+    padding: 20,
+    borderRadius: 50,
+    backgroundColor: "#7F00FF",
   },
 });
 

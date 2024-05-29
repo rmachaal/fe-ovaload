@@ -25,23 +25,26 @@ const HomeScreen = (props) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    width: "100%",
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#fff",
   },
+  user: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginLeft: 40,
+    marginRight: 40,
+  },
   header: {
     fontSize: 30,
-    fontWeight: "bold",
+    fontWeight: "600",
     color: "#7F00FF",
     marginBottom: 20,
     textAlign: "center",
     borderBottomColor: "#DDDDDD",
     borderBottomWidth: 0.5,
     paddingBottom: 10,
-  },
-  user: {
-    flexDirection: "row",
-    alignItems: "center",
   },
   profilePic: {
     width: 75,
