@@ -12,7 +12,7 @@ const ExercisesStackNavigator = () => {
 
     <Stack.Navigator initialRouteName="Exercises" >
     <Stack.Screen name="Exercises" component={Exercises} options={{ headerShown: false }}/>
-    <Stack.Screen name="IndividualExercise" component={IndividualExercise} options={{ headerShown: false }}/>
+    <Stack.Screen name="IndividualExercise" component={IndividualExercise} options={{headerTitle: '', headerTransparent: true, headerBackTitle: "Back", headerTintColor: "#7F00FF"}}/>
     <Stack.Screen name="AddNewExercise" component={AddNewExercise} options={{ headerShown: false }}/>
       </Stack.Navigator>
 
