@@ -8,10 +8,10 @@ export function getExercises(username) {
     });
 }
 
-export function postExercises(username, newExerciseName) {
+export function postExercises(username, newExercise) {
   return axios
     .get(`https://ovaload-be.onrender.com/api/${username}/exercises`, {
-      exerciseName: newExerciseName,
+      newExercise
     })
     .catch((err) => {
       console.log(err);
