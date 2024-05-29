@@ -1,114 +1,20 @@
-// import React from "react";
-// import { View, Text, Button, Image, StyleSheet, FlatList, TouchableOpacity} from "react-native";
-// import { UserContext } from "../contexts/UserContext"
-// // import { Card } from "react-native-elements"
-// import { getExercises } from "../../api";
-// import { useState, useContext, useEffect } from "react"
-
-// const Exercises = () => {
-
-//   const [exercises, setExercises] = useState([])
-//   const {username} = useContext(UserContext)
-
-//   useEffect(() => {
-
-//     getExercises(username).then((res) => {
-//       setExercises(res.data.exercises)
-//     })
-//     .catch((err) => {
-//       console.error(err)
-//     })
-//   }, [username])
-
-
-//   return (
-//      <View style={styles.headerText}>
-//       <Image
-//         source={require("../../assets/placeholder_logo.jpeg")}
-//         style={styles.logo}
-//       />
-//       <Text>My Exercises</Text>
-//       <FlatList
-//         data={exercises}
-//         keyExtractor={(item) => item._id}
-//         renderItem={({ item }) => (
-//           <View style={styles.item}>
-//             <Text style={styles.title}>{item.exerciseName}</Text>
-//             <FlatList
-//               data={item.exerciseStats}
-//               keyExtractor={(stat) => stat.createdAt}
-//               renderItem={({ item }) => (
-//                 <View style={styles.stats}>
-//                   <Text style={styles.text}>Weight: {item.weightKg} kg</Text>
-//                   <Text style={styles.text}>Sets: {item.sets}</Text>
-//                   <Text style={styles.text}>Reps: {item.reps}</Text>
-//                 </View>
-//               )}
-//             />
-//           </View>
-//         )}
-//       />
-//     </View>
-//   );
-// };
-
-
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     alignItems: "center",
-//     paddingTop: 20,
-//     backgroundColor: "#fff",
-//   },
-//   tabHeader: {
-//     fontSize: 30,
-//     fontWeight: "bold",
-//     color: "#7F00FF",
-//     marginBottom: 10,
-//   },
-//   headerRow: {
-//     flexDirection: "row",
-//     justifyContent: "space-between",
-//     width: 300,
-//     marginBottom: 10,
-//   },
-//   headerText: {
-//     fontWeight: "bold",
-//     color: "#8F87A1",
-//     fontSize: 18,
-//   },
-//   tableRow: {
-//     flexDirection: "row",
-//     justifyContent: "space-between",
-//     alignItems: "center",
-//     width: 300,
-//     height: 80,
-//     marginBottom: 10,
-//     backgroundColor: "rgba(189, 181, 213, 0.25)",
-//     borderRadius: 10,
-//     padding: 10,
-//   },
-//   levelImage: {
-//     width: 50,
-//     height: 50,
-//     borderRadius: 25,
-//     objectFit: "cover",
-//   },
-//   text: {
-//     fontSize: 18,
-//     fontWeight: "bold",
-//     color: "#7F00FF",
-//   },
-// });
-
-// export default Exercises;
-
 import React, { useState, useContext, useEffect } from "react";
-import { View, Text, Image, StyleSheet, FlatList, TouchableOpacity, Button } from "react-native";
+
+import { View, Text, StyleSheet, FlatList, TouchableOpacity } from "react-native";
 import { UserContext } from "../contexts/UserContext";
-import { getExercises } from "../../api"; // Make sure this is the correct path
+import { getExercises } from "../../api"; 
 import { useNavigation } from "@react-navigation/native";
+
+const formatExerciseName = (name) => {
+  return name
+    .split('-')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+};
+
+const formatDate = (date) => {
+  return new Date(date).toLocaleDateString(undefined, { day: 'numeric', month: 'numeric' });
+};
 
 const Exercises = () => {
   const [exercises, setExercises] = useState([]);
@@ -126,91 +32,111 @@ const Exercises = () => {
       });
   }, [username]);
 
-  // const getLatestStats = (exercises) => {
-  //     let latestDate = 
-  //     exercises.forEach((exercise) => {
-  //     const latestStats = exercise.exerciseStats.map((stats) => {
-  //       if (stats.createdAt)
-  //     })
-  //   })
-  // }
+  const getMostRecentStats = (exerciseStats) => {
+    return exerciseStats.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))[0];
+  };
 
-  const formatExerciseName = (name) => {
-    return name
-      .split('-')
-      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-      .join(' ');
-  };  
+  const renderExercise = ({ item }) => {
+    const mostRecentStat = getMostRecentStats(item.exerciseStats);
+
+    return (
+      <TouchableOpacity
+        style={styles.statItem}
+        onPress={() => navigation.navigate('IndividualExercise', { exercise: item })}
+      >
+        <Text style={styles.title}>{formatExerciseName(item.exerciseName)}</Text>
+        <View style={styles.statDetails}>
+          {item.exerciseType === "cardio" ? (
+            <>
+              <View>
+                <Text style={styles.text}>Time</Text>
+                <Text style={styles.text2}>{mostRecentStat.timeMin} min</Text>
+              </View>
+              <View>
+                <Text style={styles.text}>Distance</Text>
+                <Text style={styles.text2}>{mostRecentStat.distanceKm} km</Text>
+              </View>
+            </>
+          ) : (
+            <>
+              <View>
+                <Text style={styles.text}>Weight</Text>
+                <Text style={styles.text2}>{mostRecentStat.weightKg} kg</Text>
+              </View>
+              <View>
+                <Text style={styles.text}>Sets</Text>
+                <Text style={styles.text2}>{mostRecentStat.sets}</Text>
+              </View>
+              <View>
+                <Text style={styles.text}>Reps</Text>
+                <Text style={styles.text2}>{mostRecentStat.reps}</Text>
+              </View>
+            </>
+          )}
+          <View>
+            <Text style={styles.text}>Date</Text>
+            <Text style={styles.text2}>{formatDate(mostRecentStat.createdAt)}</Text>
+          </View>
+        </View>
+      </TouchableOpacity>
+    );
+  };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.headerText}>My Exercises</Text> 
+      <Text style={styles.pageTitle}>My Exercises</Text>
       <FlatList
         data={exercises}
         keyExtractor={(item) => item._id}
-        renderItem={({ item }) => (
-          <View style={styles.buttons}>
-          <TouchableOpacity
-            onPress={() => navigation.navigate('IndividualExercise', { exercise: item })}
-            style={styles.item}
-          >
-          <Text style={styles.title}>{formatExerciseName(item.exerciseName)}</Text>
-          <Text style={styles.text}>Current Stats</Text>
-          {/* <Text>{item.exerciseStats[item.exerciseStats.length-1]}</Text> */}
-          </TouchableOpacity>
-          </View>
-        )}
+        renderItem={renderExercise}
+        contentContainerStyle={styles.contentContainer}
       />
     </View>
   );
 };
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 50,
-    paddingHorizontal: 20,
+    backgroundColor: "#fff",
+  },
+  contentContainer: {
     padding: 20,
+    alignItems: "center",
   },
-  logo: {
-    width: 100,
-    height: 100,
-    alignSelf: "center",
-  },
-  headerText: {
-    fontSize: 24,
+  pageTitle: {
+    fontSize: 28,
     fontWeight: "bold",
+    color: "#7F00FF",
+    marginBottom: 20,
     textAlign: "center",
-    marginVertical: 20,
   },
-  item: {
-    padding: 10,
-    marginVertical: 8,
-    backgroundColor: "#F9C2FF",
-    width: 350,
-    alignItems: "left",
-    paddingLeft: 100,
+  statItem: {
+    width: 375,
+    marginBottom: 20,
     backgroundColor: "rgba(189, 181, 213, 0.25)",
-    borderRadius: 16
+    borderRadius: 10,
+    padding: 10,
+  },
+  statDetails: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
   title: {
-    fontSize: 20,
-    textAlign: "center",
+    fontSize: 22,
+    fontWeight: "800",
     color: "#7F00FF",
-  },
-  stats: {
-    paddingLeft: 10,
-    paddingTop: 5,
+    marginBottom: 10,
   },
   text: {
-    fontSize: 16,
-    alignItems: "left",
-    color: "#7F00FF"
+    fontSize: 15,
+    paddingBottom: 5,
   },
-  buttons: {
-    flex: 1,
-    paddingBottom: 20,
-    alignItems: "center",
-    flexDirection: "row",
-  }
+  text2: {
+    fontSize: 20,
+    fontWeight: "600",
+    color: "#7F00FF",
+  },
 });
 export default Exercises;
