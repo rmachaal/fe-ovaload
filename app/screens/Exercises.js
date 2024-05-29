@@ -4,6 +4,7 @@ import { View, Text, StyleSheet, FlatList, TouchableOpacity } from "react-native
 import { UserContext } from "../contexts/UserContext";
 import { getExercises } from "../../api"; 
 import { useNavigation } from "@react-navigation/native";
+import Icon from "react-native-vector-icons/Ionicons"
 
 const formatExerciseName = (name) => {
   return name
@@ -19,7 +20,6 @@ const formatDate = (date) => {
 const Exercises = () => {
   const [exercises, setExercises] = useState([]);
   const { username } = useContext(UserContext);
-  const [latestStats, setLatestStats] = useState({})
   const navigation = useNavigation();
 
   useEffect(() => {
@@ -90,6 +90,14 @@ const Exercises = () => {
         renderItem={renderExercise}
         contentContainerStyle={styles.contentContainer}
       />
+      <View>
+        <TouchableOpacity
+          style={styles.addExerciseButton}
+          onPress={() => navigation.navigate("AddNewExercise")}
+        >
+          <Icon name="add" size={30} color="#fff" />
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -137,6 +145,21 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "600",
     color: "#7F00FF",
+  },
+  addExerciseButton: {
+    position: "absolute",
+    bottom: 20,
+    right: 20,
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    backgroundColor: "#7F00FF",
+    justifyContent: "center",
+    alignItems: "center",
+    elevation: 5, // for Android shadow
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 3,
   },
 });
 export default Exercises;
