@@ -51,12 +51,7 @@ const TodaysChallenges = () => {
         renderItem={({ item, index }) => {
           const mostRecentStat = getMostRecentStats(item.nextChallenge);
           return (
-            <TouchableOpacity
-              style={styles.statItem}
-              onPress={() =>
-                navigation.navigate("IndividualExercise", { exercise: item })
-              }
-            >
+            <View style={styles.statItem}>
               <Text style={styles.title}>
                 {formatExerciseName(item.exerciseName)}
               </Text>
@@ -99,7 +94,7 @@ const TodaysChallenges = () => {
                   <Text style={styles.text2}>{item.completed && "✅"}</Text>
                 </View>
               </View>
-            </TouchableOpacity>
+            </View>
           );
         }}
       />
