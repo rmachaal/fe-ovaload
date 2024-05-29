@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import { View, StyleSheet, ActivityIndicator } from 'react-native';
 import { UserContext } from '../contexts/UserContext';
 import Calendar from '../Components/Calendar';
