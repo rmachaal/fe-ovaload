@@ -84,12 +84,8 @@ export function patchPlannedExercise(
     });
 }
 
-export async function postExerciseStats(
-  username,
-  exerciseName,
-  newExerciseStats
-) {
-  console.log(username, exerciseName, newExerciseStats);
+export async function postExerciseStats(username, exerciseName, newExerciseStats) {
+
   try {
     const response = await axios.post(
       `https://ovaload-be.onrender.com/api/${username}/exercises/${exerciseName}`,
@@ -100,7 +96,7 @@ export async function postExerciseStats(
         },
       }
     );
-    console.log("from postStat func", response);
+
     return response.data;
   } catch (err) {
     console.error("Error:", err.response ? err.response.data : err.message);
@@ -156,4 +152,13 @@ export function getChatbotMessage(user) {
     .catch((err) => {
       console.log(err);
     });
+}
+
+export function deleteSelectedPlannedExercises(username,date,exerciseName){
+  return axios
+  .delete(`https://ovaload-be.onrender.com/api/${username}/plannedExercises/${date}/${exerciseName}`)
+  .then(response => response.data)
+  .catch((err) => {
+    console.log(err);
+  });
 }
