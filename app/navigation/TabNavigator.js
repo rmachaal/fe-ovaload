@@ -6,9 +6,8 @@ import Leaderboard from "../screens/Leaderboard";
 import ProgressStackNavigator from "./ProgressStackNavigator";
 import ExercisesStackNavigator from "./ExercisesStackNavigator.js";
 
-import { NavigationContainer } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
-import { StyleSheet } from "react-native";
+import { StyleSheet, Image } from "react-native";
 
 const Tab = createBottomTabNavigator();
 
@@ -36,7 +35,12 @@ const TabNavigator = () => {
           style: styles.tabBar,
         }}
       >
-        <Tab.Screen name="Home" component={HomeScreen}  options={{ headerTitle: "Ovaload", headerTintColor: "#7F00FF", headerTitleStyle: {fontWeight: "900", fontSize: 28 }}} />
+        <Tab.Screen name="Home" component={HomeScreen}  options={{ headerTitle: () => (
+              <Image
+                style={styles.headerTitle}
+                source={require('../../assets/logo.png')}
+              />
+            ), headerTintColor: "#7F00FF", headerTitleStyle: {fontWeight: "900", fontSize: 28 }}} />
         <Tab.Screen name="Tracker" component={ProgressStackNavigator}  options={{ headerTitle: "Progress", headerTintColor: "#7F00FF", headerTitleStyle: {fontWeight: "800", fontSize: 24 }}} />
         <Tab.Screen name="Progress" component={ExercisesStackNavigator} options={{ headerTitle: "My Exercises", headerTintColor: "#7F00FF", headerTitleStyle: {fontWeight: "800", fontSize: 24 }}} />
         <Tab.Screen name="Leaderboard" component={Leaderboard}  options={{ headerTitle: "Leaderboard", headerTintColor: "#7F00FF", headerTitleStyle: {fontWeight: "800", fontSize: 24 }}} />
@@ -51,6 +55,11 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFFFFF",
     borderTopWidth: 1,
     borderTopColor: "#DDDDDD",
+  },
+  headerTitle: {
+    width: 150, 
+    height: 40, 
+    resizeMode: 'contain',
   },
 });
 
