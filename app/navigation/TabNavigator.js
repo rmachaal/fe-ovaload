@@ -20,9 +20,9 @@ const TabNavigator = () => {
             let iconName;
             if (route.name === "Home") {
               iconName = focused ? "home" : "home-outline";
-            } else if (route.name === "Progress") {
+            } else if (route.name === "Tracker") {
               iconName = focused ? "analytics" : "analytics-outline";
-            } else if (route.name === "Exercises") {
+            } else if (route.name === "Progress") {
               iconName = focused ? "fitness" : "fitness-outline";
             } else if (route.name === "Leaderboard") {
               iconName = focused ? "trophy" : "trophy-outline";
@@ -37,8 +37,8 @@ const TabNavigator = () => {
         }}
       >
         <Tab.Screen name="Home" component={HomeScreen} />
-        <Tab.Screen name="Progress" component={ProgressStackNavigator} />
-        <Tab.Screen name="Exercises" component={ExercisesStackNavigator} />
+        <Tab.Screen name="Tracker" component={ProgressStackNavigator} />
+        <Tab.Screen name="Progress" component={ExercisesStackNavigator} />
         <Tab.Screen name="Leaderboard" component={Leaderboard} />
       </Tab.Navigator>
   );

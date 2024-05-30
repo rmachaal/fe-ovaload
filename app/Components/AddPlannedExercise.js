@@ -76,22 +76,25 @@ const AddPlannedExercise = ({ route, navigation }) => {
     return <ActivityIndicator size="xlarge" color="#7F00FF" />;
   }
 
+  console.log("exercise",exercises)
+
   return (
     <View style={styles.container}>
       <Text style={styles.header}>Add Exercises</Text>
       <FlatList
-        data={exercises}
-        keyExtractor={(item) => item.exerciseName}
-        renderItem={({ item }) => (
-          <View style={styles.exerciseContainer}>
-            <CheckBox
-              value={selectedExercises.includes(item.exerciseName)}
-              onValueChange={() => handleCheckboxChange(item.exerciseName)}
-            />
-            <View style={styles.dataContainer}>
-            <Text>{item.exerciseName.split("-").map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(" ")}</Text>
-            {item.exerciseType === 'cardio' && (
-              <View style={styles.inputContainer}>
+  data={exercises}
+  keyExtractor={(item) => item.exerciseName}
+  renderItem={({ item }) => {
+    return (
+      <View style={styles.exerciseContainer}>
+        <CheckBox
+          value={selectedExercises.includes(item.exerciseName)}
+          onValueChange={() => handleCheckboxChange(item.exerciseName)}
+        />
+        <View style={styles.dataContainer}>
+          <Text>{item.exerciseName.split("-").map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(" ")}</Text>
+          {item.exerciseType === 'cardio' && (
+            <View style={styles.inputContainer}>
               <Text style={styles.labelText}>Distance:</Text>
               <TextInput
                 style={styles.input}
@@ -107,12 +110,18 @@ const AddPlannedExercise = ({ route, navigation }) => {
                 onChangeText={(value) => handleInputChange(item.exerciseName, 'timeMin', value)}
               />
             </View>
-            )}
-            </View>
-          </View>
-        )}
-      />
-      <Button title="Add Selected Exercises" onPress={handleAddExercises} />
+          )}
+        </View>
+      </View>
+    );
+  }}
+/>
+
+      <Button
+  title="Add Selected Exercises"
+  onPress={handleAddExercises}
+  disabled={selectedExercises.length === 0}
+/>
     </View>
   );
 };
