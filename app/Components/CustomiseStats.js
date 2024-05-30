@@ -12,7 +12,11 @@ import {
   StyleSheet,
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
-import { patchPlannedExercise, postExerciseStats, patchLeaderboardScore} from "../../api";
+import {
+  patchPlannedExercise,
+  postExerciseStats,
+  patchLeaderboardScore,
+} from "../../api";
 
 const CustomiseStats = ({
   item,
@@ -74,56 +78,77 @@ const CustomiseStats = ({
             >
               <Icon name="close" size={30} color="#7F00FF" />
             </TouchableOpacity>
-            <Text>How much did you complete?</Text>
+            <Text style={styles.title}>How much did you achieve?</Text>
 
+<View style={styles.inputContainer}>
             {item.exerciseType === "cardio" ? (
               <>
-                <TextInput
+              <View style={styles.statContainer}>
+                  <Text style={styles.text}> Distance</Text>
+                  <TextInput
                   style={styles.input}
-                  onChangeText={(value) => handleInputChange("distanceKm", value)}
+                  onChangeText={(value) =>
+                    handleInputChange("distanceKm", value)
+                  }
                   value={distanceKm}
                   keyboardType="numeric"
-                  placeholder="Distance (in km)"
+                  placeholder="km"
                   autoFocus={true}
                 />
+                </View>
 
-                <TextInput
+                <View style={styles.statContainer}>
+                  <Text style={styles.text}> Time</Text>
+                  <TextInput
                   style={styles.input}
                   onChangeText={(value) => handleInputChange("timeMin", value)}
                   value={timeMin}
                   keyboardType="numeric"
                   placeholder="Time (in minutes)"
                 />
+                </View>
               </>
             ) : (
               <>
-                <TextInput
-                  style={styles.input}
-                  onChangeText={(value) => handleInputChange("weightKg", value)}
-                  value={weightKg}
-                  keyboardType="numeric"
-                  placeholder="Weight (in kg)"
-                  autoFocus={true}
-                />
+                <View style={styles.statContainer}>
+                  <Text style={styles.text}> Weight</Text>
+                  <TextInput
+                    style={styles.input}
+                    onChangeText={(value) =>
+                      handleInputChange("weightKg", value)
+                    }
+                    value={weightKg}
+                    keyboardType="numeric"
+                    placeholder="Kg"
+                    autoFocus={true}
+                  />
+                </View>
 
-                <TextInput
-                  style={styles.input}
-                  onChangeText={(value) => handleInputChange("sets", value)}
-                  value={sets}
-                  keyboardType="numeric"
-                  placeholder="Sets"
-                />
+                <View style={styles.statContainer}>
+                  <Text style={styles.text}> Sets</Text>
+                  <TextInput
+                    style={styles.input}
+                    onChangeText={(value) => handleInputChange("sets", value)}
+                    value={sets}
+                    keyboardType="numeric"
+                    placeholder="Sets"
+                  />
+                </View>
 
-                <TextInput
-                  style={styles.input}
-                  onChangeText={(value) => handleInputChange("reps", value)}
-                  value={reps}
-                  keyboardType="numeric"
-                  placeholder="Reps"
-                />
+                <View style={styles.statContainer}>
+                  <Text style={styles.text}> Reps</Text>
+                  <TextInput
+                    style={styles.input}
+                    onChangeText={(value) => handleInputChange("reps", value)}
+                    value={reps}
+                    keyboardType="numeric"
+                    placeholder="Reps"
+                  />
+                </View>
               </>
             )}
 
+</View>
             <TouchableOpacity
               style={styles.button}
               onPress={() => {
@@ -131,7 +156,7 @@ const CustomiseStats = ({
                 setShowModal(false);
               }}
             >
-              <Text style={styles.text}>Submit</Text>
+              <Text style={styles.submit}>Submit</Text>
             </TouchableOpacity>
           </View>
         </KeyboardAvoidingView>
@@ -158,6 +183,14 @@ const styles = StyleSheet.create({
     top: 10,
     right: 10,
   },
+  inputContainer: {
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+    alignItems: "center",
+  },
+  statContainer:{
+width:100
+  },
   input: {
     borderWidth: 1,
     borderColor: "#ccc",
@@ -165,6 +198,8 @@ const styles = StyleSheet.create({
     padding: 10,
     marginBottom: 10,
     width: "100%",
+    color: "#7F00FF",
+    textAlign: "center",
   },
   button: {
     alignItems: "center",
@@ -174,10 +209,20 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     backgroundColor: "#7F00FF",
   },
-  text: {
+  submit: {
     fontSize: 14,
     color: "white",
     fontWeight: "bold",
+  },
+  title: {
+    fontSize: 20,
+    fontWeight: "700",
+    marginBottom: 10,
+    color: "#7F00FF",
+  },
+  text: {
+    fontSize: 15,
+    paddingBottom: 5,
   },
 });
 

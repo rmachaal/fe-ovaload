@@ -108,6 +108,16 @@ const SwipeableItem = ({
             />
           </TouchableOpacity>
         )}
+
+{!isToday && item.nextChallenge && (
+  <Icon
+    name={"calendar"}
+    size={30}
+    color={"#7F00FF"}
+    style={styles.icon}
+  />
+)}
+
         <NextChallenge
           item={item}
           isToday={isToday}
@@ -132,13 +142,14 @@ const SwipeableItem = ({
 const styles = StyleSheet.create({
   swipeContainer: {
     position: "relative",
-    marginBottom: 10,
+    marginBottom: 20,
     flexDirection: "row",
     flex: 1,
     alignItems: "center",
   },
   icon:{
-   marginRight:10
+   marginRight:10,
+   marginLeft: 5,
   }
 });
 

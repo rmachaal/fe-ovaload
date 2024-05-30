@@ -9,6 +9,8 @@ import {
 import { useState, useEffect, useContext } from "react";
 import { UserContext } from "../contexts/UserContext";
 import { getPlannedExerciseByDate } from "../../api";
+import { AntDesign } from '@expo/vector-icons';
+import { Feather } from '@expo/vector-icons';
 
 const TodaysChallenges = () => {
   const { username } = useContext(UserContext);
@@ -96,7 +98,21 @@ const TodaysChallenges = () => {
                 )}
                 <View>
                   <Text style={styles.text}>Completed</Text>
-                  <Text style={styles.text2}>{item.completed && "✅"}</Text>
+                  {item.completed ? (
+    <AntDesign
+      name={"checkcircle"}
+      size={30}
+      color={"#7F00FF"}
+      style={styles.icon}
+    />
+  ) : (
+    <Feather
+      name={"circle"}
+      size={30}
+      color={"#7F00FF"}
+      style={styles.icon}
+    />
+  )}
                 </View>
               </View>
             </View>
@@ -109,12 +125,12 @@ const TodaysChallenges = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flex: 1.4,
     backgroundColor: "rgba(128, 128, 128, 0.1)",
     borderRadius: 25,
     // padding: 15,
     paddingTop: 10,
-    // marginTop: 25
+    // marginTop: 25,
   },
   header: {
     fontSize: 28,
@@ -151,7 +167,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 10,
   },
-
+  
   title: {
     fontSize: 22,
     fontWeight: "800",
@@ -173,5 +189,8 @@ const styles = StyleSheet.create({
     color: "#7F00FF",
     textAlign: "center",
   },
+  icon:{
+    textAlign: "center"
+  }
 });
 export default TodaysChallenges;

@@ -53,8 +53,6 @@ const NextChallenge = ({
     }
   };
 
-  const challengeContainerStyle = isToday ? styles.challengeContainer : styles.challengeContainerB;
-
   return (
     <View style={styles.nextChallengeContainer}>
       <View style={styles.deleteBackground}>
@@ -62,7 +60,7 @@ const NextChallenge = ({
       </View>
       <Animated.View
         style={[
-          challengeContainerStyle,
+          styles.challengeContainer,
           { transform: [{ translateX }] },
         ]}
         {...panResponder.panHandlers}
@@ -88,6 +86,9 @@ const styles = StyleSheet.create({
   nextChallengeContainer: {
     backgroundColor: "rgb(230, 230, 245)",
     borderRadius: 5,
+    
+    // marginLeft: 10, // to comment out for future exercise plans 
+    // marginTop: 10
   },
   deleteBackground: {
     position: "absolute",
@@ -100,18 +101,21 @@ const styles = StyleSheet.create({
     backgroundColor: "red",
     paddingRight: 20,
     borderRadius: 5,
+    // marginLeft: 50,
   },
   challengeContainer: {
+   
     padding: 10,
     backgroundColor: "rgb(230, 230, 245)",
     borderRadius: 5,
     width:330
   },
-  challengeContainerB:{
+  challengeContainerB:{ 
     padding: 10,
     backgroundColor: "rgb(230, 230, 245)",
     borderRadius: 5,
-    width:370
+    width:370,
+    // marginLeft: 50
   },
   title: {
     fontSize: 20,

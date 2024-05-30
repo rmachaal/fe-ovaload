@@ -200,8 +200,12 @@ const styles = StyleSheet.create({
   safeContainer: {
     flex: 1,
     backgroundColor: "white",
-    padding:20,
-    borderRadius:30
+    // padding:20,
+    borderRadius: 20,
+    // marginLeft: 5,
+    // marginRight: 5,
+    paddingTop: 40,
+    // marginTop: 40
   },
   headerImage: {
     width: "100%",

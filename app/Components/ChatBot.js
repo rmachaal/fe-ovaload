@@ -50,12 +50,12 @@ const ChatBot = () => {
       <View style={styles.mascotContainer}>
         <Text style={styles.mascotTitle}>Jim Rat </Text>
         </View>
-        <Ionicons
+        {/* <Ionicons
           name="chatbubble-ellipses-outline"
           size={27}
           color="#7F00FF"
           style={styles.speechBubble}
-        />
+        /> */}
       </View>
       <Text style={styles.messageText}>{message.replace(/!([^!]|$)/g, '!\n$1')}</Text>
       </View>
