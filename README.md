@@ -34,7 +34,7 @@ To run the app in development mode, you can use the following commands:
 
 - **Start the React Native development server:**
 
-    `npm start`
+    `npm expo start`
 
 - **Run the app on an emulator or a physical device:**
 
