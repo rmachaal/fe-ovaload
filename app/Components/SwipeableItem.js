@@ -108,6 +108,16 @@ const SwipeableItem = ({
             />
           </TouchableOpacity>
         )}
+
+{!isToday && item.nextChallenge && (
+  <Icon
+    name={"calendar"}
+    size={30}
+    color={"#7F00FF"}
+    style={styles.icon}
+  />
+)}
+
         <NextChallenge
           item={item}
           isToday={isToday}
