@@ -206,6 +206,8 @@ const styles = StyleSheet.create({
     // marginRight: 5,
     paddingTop: 40,
     // marginTop: 40
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   headerImage: {
     width: "100%",
