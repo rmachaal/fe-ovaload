@@ -1,9 +1,10 @@
 import { useState, useEffect, useContext } from 'react';
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, TextInput, ActivityIndicator, Button } from 'react-native';
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, TextInput, ActivityIndicator } from 'react-native';
 import CheckBox from 'expo-checkbox';
 import { getExercises, postPlannedExercise } from '../../api';
 import { UserContext } from '../contexts/UserContext';
 import { useExerciseAdded } from '../contexts/ExerciseAddedContext';
+import Icon from "react-native-vector-icons/AntDesign";
 
 const AddPlannedExercise = ({ route, navigation }) => {
   const { selectedDate, plannedExercises } = route.params;
@@ -90,11 +91,16 @@ const AddPlannedExercise = ({ route, navigation }) => {
         keyExtractor={(item) => item.exerciseName}
         renderItem={({ item }) => (
           <View style={styles.statItem}>
-            <CheckBox
-              value={selectedExercises.includes(item.exerciseName)}
-              onValueChange={() => handleCheckboxChange(item.exerciseName)}
-              color={selectedExercises.includes(item.exerciseName) ? "#7F00FF" : undefined}
-            />
+           <TouchableOpacity
+        onPress={() => handleCheckboxChange(item.exerciseName)}
+        style={{ marginRight: 10 }}
+      >
+        <Icon
+          name={selectedExercises.includes(item.exerciseName) ? 'pluscircle' : 'pluscircleo'}
+          size={24}
+          color={selectedExercises.includes(item.exerciseName) ? '#7F00FF' : '#7F00FF'}
+        />
+      </TouchableOpacity>
             <View style={styles.dataContainer}>
               <Text style={styles.exerciseName}>{formatExerciseName(item.exerciseName)}</Text>
               {item.exerciseType === 'cardio' && (
@@ -135,7 +141,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'white',
     padding: 20,
-    paddingTop: 50
+    paddingTop: 50,
   },
   header: {
     fontSize: 28,
