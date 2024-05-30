@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: "center",
         marginLeft: 5,
-        marginTop: 20,
+        // marginTop: 20,
         // marginBottom: 10,
         // marginRight: 10,
       },
@@ -79,14 +79,15 @@ const styles = StyleSheet.create({
     backgroundColor: "rgb(248, 249, 249)",
     borderRadius: 5,
     width:330,
-    marginTop: 20,
+    // marginTop: 10,
     // paddingTop: 20,
+    // marginBottom: 20
   },
   statDetails: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginBottom: 10
+    // marginBottom: 10
   },
   title: {
     fontSize: 22,

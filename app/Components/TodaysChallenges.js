@@ -125,7 +125,7 @@ const TodaysChallenges = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flex: 1.4,
     backgroundColor: "rgba(128, 128, 128, 0.1)",
     borderRadius: 25,
     // padding: 15,
