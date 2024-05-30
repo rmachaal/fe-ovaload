@@ -6,16 +6,6 @@ import { getExercises } from "../../api";
 import { useNavigation } from "@react-navigation/native";
 import Icon from "react-native-vector-icons/Ionicons"
 
-const formatExerciseName = (name) => {
-  return name
-    .split('-')
-    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(' ');
-};
-
-const formatDate = (date) => {
-  return new Date(date).toLocaleDateString(undefined, { day: 'numeric', month: 'numeric' });
-};
 
 const Exercises = () => {
   const [exercises, setExercises] = useState([]);
@@ -31,6 +21,20 @@ const Exercises = () => {
         console.log(err);
       });
   }, [username]);
+
+  const formatExerciseName = (name) => {
+    if (!name) {
+    throw new Error("Exercise name is undefined")
+    }
+      return name
+      .split('-')
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ');
+  };
+  
+  const formatDate = (date) => {
+    return new Date(date).toLocaleDateString(undefined, { day: 'numeric', month: 'numeric' });
+  };
 
   const getMostRecentStats = (exerciseStats) => {
     return exerciseStats.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))[0];

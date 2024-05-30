@@ -1,158 +1,159 @@
-import { useEffect, useContext, useState, useSyncExternalStore } from "react";
+import React, { useContext, useState } from "react";
 import { postExercises } from "../../api";
 import { TextInput } from "react-native-gesture-handler";
-import RNPickerSelect from "react-native-picker-select"
+import RNPickerSelect from "react-native-picker-select";
 import { UserContext } from "../contexts/UserContext";
-import { View, Text, Button, StyleSheet } from "react-native"
+import { View, Text, Button, StyleSheet } from "react-native";
 
-const AddNewExercise = ({navigation}) => {
+const AddNewExercise = ({ navigation }) => {
     const { username } = useContext(UserContext);
-    // const [exercises, setExercises] = useState([])
-    const [exerciseName, setExerciseName] = useState("")
-    const [weightKg, setWeightKg] = useState(0)
-    const [sets, setSets] = useState(0)
-    const [reps, setReps] = useState(0)
+    const [exerciseName, setExerciseName] = useState("");
+    const [weightKg, setWeightKg] = useState("");
+    const [sets, setSets] = useState("");
+    const [reps, setReps] = useState("");
     const [dropdownValue, setDropdownValue] = useState(null);
-    const [distanceKm, setDistanceKm] = useState(0)
-    const [timeMins, setTimeMins] = useState(0)
-    // const [inputs, setInputs] = useState({})
-   
-        const postNewCardioExercise = async (username, exerciseName, distanceKm, timeMins) => {
-            const newExercise = {
-                exerciseName: exerciseName,
-                exerciseStats: [{
-                    distanceKm: distanceKm,
-                    timeMin: timeMins
-                }]
-            }
-        try {
-            await postExercises(username, newExercise)
-        }
-        catch (err) {
-            console.error("Error posting exercise", error)
-        }
-        }
-        
-        const postNewResistanceExercise = async (username, exerciseName, weightKg, sets, reps) => {
-            const newExercise = {
-                exerciseName: exerciseName,
-                exerciseStats: [{
-                    weightKg: weightKg,
-                    sets: sets,
-                    reps: reps
-                }]
-            }
-        try {
-             await postExercises(username, newExercise)
-        }
-        catch (err) {
-            console.error("Error posting exercise", error)
-        }
-        }
-
-        
-            const handleInputChange = (e) => {
-                setExerciseName(e.target.value);
-              };
-
+    const [distanceKm, setDistanceKm] = useState("");
+    const [timeMins, setTimeMins] = useState("");
+  
+    const postNewCardioExercise = async () => {
+      const newExercise = {
+        exerciseName: exerciseName,
+        exerciseStats: [
+          {
+            distanceKm: parseFloat(distanceKm),
+            timeMin: parseFloat(timeMins),
+          },
+        ],
+      };
+      try {
+        await postExercises(username, newExercise);
+        navigation.goBack();
+      } catch (error) {
+        console.error("Error posting exercise", error);
+      }
+    };
+  
+    const postNewResistanceExercise = async () => {
+      const newExercise = {
+        exerciseName: exerciseName,
+        exerciseStats: [
+          {
+            weightKg: parseFloat(weightKg),
+            sets: parseInt(sets),
+            reps: parseInt(reps),
+          },
+        ],
+      };
+      try {
+        await postExercises(username, newExercise);
+        console.log("hello")
+        navigation.goBack();
+      } catch (error) {
+        console.error("Error posting exercise", error);
+      }
+    };
+  
     return (
-        <View>  
-            <View style={styles.inputContainer}>         
-            <Text style={styles.labelText}>Select exercise type:</Text>
-            <RNPickerSelect
-              placeholder={{
-                label: 'Select an option...',
-                value: null,
-              }}
-              items={[
-                { label: 'Resistance', value: 'resistance' },
-                { label: 'Cardio', value: 'cardio' }
-              ]}
-              onValueChange={(value) => setDropdownValue(value)}
-              value={dropdownValue}
-            />
-            </View>
-            {/* {dropdownValue && <Text>Selected: {dropdownValue}</Text>} */}
-            {dropdownValue === "cardio" ? (
-                <>
-            <View style={styles.inputContainer}>
-            <Text style={styles.labelText}>Exercise name</Text>
-            <TextInput
-            placeholder="Enter exercise name here"
-            onTextChange={(exercise)=>{setExerciseName(exercise)}}
-            value={exerciseName}
-            style={styles.input}
-            // onChangeText={(value) => handleInputChange(exerciseName, 'distanceKm', value)}
-            />
-            </View>
-            <View style={styles.inputContainer}>
-            <Text style={styles.labelText}>Distance</Text>
-            <TextInput
-            placeholder="Enter distance here"
-            onTextChange={(distance)=>{setDistanceKm(distance)}}
-            value={distanceKm}
-            style={styles.input}
-            // onChangeText={(value) => handleInputChange(exerciseName, 'distanceKm', value)}
-            />
-            </View>
-            <View style={styles.inputContainer}>
-            <Text style={styles.labelText}>Time</Text>
-            <TextInput
-            placeholder="Enter time here"
-            onTextChange={(time)=>{setTimeMins(time)}}
-            value={timeMins}
-            style={styles.input}
-            />
-            </View>
-            <View>
-            <Button title="Add" onPress={postNewCardioExercise(username, exerciseName, distanceKm, timeMins)}/>
-            </View>
-            </>
-            ) : (
-                <>
-            <View style={styles.inputContainer}>
-            <Text style={styles.labelText}>Exercise name</Text>
-            <TextInput
-            placeholder="Enter exercise name here"
-            onTextChange={(exercise)=>{ return setExerciseName(exercise)}}
-            value={exerciseName}
-            style={styles.input}
-            />
-            </View>
-            <View style={styles.inputContainer}>
-            <Text style={styles.labelText}>Weight</Text>
-            <TextInput
-            placeholder="Enter weight here"
-            onTextChange={(weight)=>{setWeightKg(weight)}}
-            value={weightKg}
-            style={styles.input}
-            />
-            </View>
-            <View style={styles.inputContainer}>
-            <Text style={styles.labelText}>Sets</Text>
-            <TextInput
-            placeholder="Enter number of sets here"
-            onTextChange={(sets)=>{setSets(sets)}}
-            value={sets}
-            style={styles.input}
-            />
-            </View>
-            <View style={styles.inputContainer}>
-            <Text style={styles.labelText}>Reps</Text>
-            <TextInput
-            placeholder="Enter number of reps here"
-            onTextChange={(reps)=>{setReps(reps)}}
-            value={reps}
-            style={styles.input}
-            />
-            </View>
-            <View>
-            <Button title="Add" onPress={postNewResistanceExercise(username, exerciseName, weightKg, sets, reps)}/>
-            </View>
-            </>)}
+      <View>
+        <View style={styles.inputContainer}>
+          <Text style={styles.labelText}>Select exercise type:</Text>
+          <RNPickerSelect
+            placeholder={{
+              label: "Select an option...",
+              value: null,
+            }}
+            items={[
+              { label: "Resistance", value: "resistance" },
+              { label: "Cardio", value: "cardio" },
+            ]}
+            value={dropdownValue}
+            onValueChange={setDropdownValue}
+          />
         </View>
-    )
-}
+        {dropdownValue === "cardio" ? (
+          <>
+            <View style={styles.inputContainer}>
+              <Text style={styles.labelText}>Exercise name</Text>
+              <TextInput
+                placeholder="Enter exercise name here"
+                value={exerciseName}
+                onChangeText={setExerciseName}
+                style={styles.input}
+              />
+            </View>
+            <View style={styles.inputContainer}>
+              <Text style={styles.labelText}>Distance</Text>
+              <TextInput
+                placeholder="Enter distance here"
+                value={distanceKm}
+                onChangeText={setDistanceKm}
+                style={styles.input}
+                keyboardType="numeric"
+              />
+            </View>
+            <View style={styles.inputContainer}>
+              <Text style={styles.labelText}>Time</Text>
+              <TextInput
+                placeholder="Enter time here"
+                value={timeMins}
+                onChangeText={setTimeMins}
+                style={styles.input}
+                keyboardType="numeric"
+              />
+            </View>
+            <View>
+              <Button title="Add" onPress={postNewCardioExercise} />
+            </View>
+          </>
+        ) : (
+          <>
+            <View style={styles.inputContainer}>
+              <Text style={styles.labelText}>Exercise name</Text>
+              <TextInput
+                placeholder="Enter exercise name here"
+                value={exerciseName}
+                onChangeText={setExerciseName}
+                style={styles.input}
+              />
+            </View>
+            <View style={styles.inputContainer}>
+              <Text style={styles.labelText}>Weight</Text>
+              <TextInput
+                placeholder="Enter weight here"
+                value={weightKg}
+                onChangeText={setWeightKg}
+                style={styles.input}
+                keyboardType="numeric"
+              />
+            </View>
+            <View style={styles.inputContainer}>
+              <Text style={styles.labelText}>Sets</Text>
+              <TextInput
+                placeholder="Enter number of sets here"
+                value={sets}
+                onChangeText={setSets}
+                style={styles.input}
+                keyboardType="numeric"
+              />
+            </View>
+            <View style={styles.inputContainer}>
+              <Text style={styles.labelText}>Reps</Text>
+              <TextInput
+                placeholder="Enter number of reps here"
+                value={reps}
+                onChangeText={setReps}
+                style={styles.input}
+                keyboardType="numeric"
+              />
+            </View>
+            <View>
+              <Button title="Add" onPress={postNewResistanceExercise} />
+            </View>
+          </>
+        )}
+      </View>
+    );
+  };
 
 const styles = StyleSheet.create({
     labelText: {
