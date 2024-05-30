@@ -10,11 +10,11 @@ const HomeScreen = (props) => {
   return (
     <View style={styles.container}>
       <View style={styles.user}>
-        <Image
+        {/* <Image
           source={require("../../assets/userprofpic.png")}
           style={styles.profilePic}
         />
-        <Text style={styles.header}>Welcome back {username}!</Text>
+        <Text style={styles.header}>Welcome back {username}!</Text> */}
       </View>
       <ChatBot />
       <TodaysChallenges />
