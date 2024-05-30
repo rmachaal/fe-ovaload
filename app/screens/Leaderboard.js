@@ -68,7 +68,6 @@ const Leaderboard = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.tabHeader}>Leaderboard</Text>
       <View style={styles.headerRow}>
         <Text style={styles.headerText}>Ranking</Text>
         <Text style={styles.headerText}>Name</Text>
@@ -131,6 +130,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     backgroundColor: "#fff",
+    paddingTop: 30
   },
   tabHeader: {
     fontSize: 35,
