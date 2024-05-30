@@ -11,7 +11,7 @@ const AddNewExercise = ({ navigation }) => {
   const [weightKg, setWeightKg] = useState("");
   const [sets, setSets] = useState("");
   const [reps, setReps] = useState("");
-  const [dropdownValue, setDropdownValue] = useState(null);
+  const [dropdownValue, setDropdownValue] = useState("resistance");
   const [distanceKm, setDistanceKm] = useState("");
   const [timeMins, setTimeMins] = useState("");
   const [shouldPost, setShouldPost] = useState(false);
@@ -72,20 +72,23 @@ const AddNewExercise = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
+      <View style={styles.title}>
+        <Text style={styles.title}>Add New Exercise</Text>
+      </View>
       <View style={styles.inputContainer}>
-        <Text style={styles.labelText}>Select exercise type:</Text>
+        <Text  style={styles.labelText}>Type:</Text>
         <RNPickerSelect
-          placeholder={{
-            label: "Select an option...",
-            value: null,
-          }}
           items={[
             { label: "Resistance", value: "resistance" },
             { label: "Cardio", value: "cardio" },
           ]}
           value={dropdownValue}
           onValueChange={setDropdownValue}
-        />
+          style={{
+            placeholder: {color: "black", fontSize: "16", marginLeft: 20},
+            inputIOS: { color:  "#7F00FF", fontSize: "17", fontWeight: "500", marginLeft: 20},
+            inputAndroid: { color: "white", fontSize: "26", marginLeft: 50},
+          }}        />
       </View>
       {dropdownValue && (
         <>
@@ -185,6 +188,13 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     fontSize: 15,
   },
+  title: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    color: '#7F00FF',
+    marginBottom: 20,
+    textAlign: 'center',
+  },
   input: {
     borderWidth: 1,
     borderColor: "#ccc",
@@ -195,6 +205,11 @@ const styles = StyleSheet.create({
     width: 240,
     height: 35,
     fontSize: 16,
+  },
+  labelText2: {
+    textAlign: "right",
+    fontSize: 29,
+    color: "white"
   },
   inputContainer: {
     flexDirection: "row",
