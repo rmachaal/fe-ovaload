@@ -201,7 +201,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "white",
     padding:20,
-    borderRadius:30
+    borderRadius:30,
   },
   headerImage: {
     width: "100%",
