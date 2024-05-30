@@ -132,13 +132,14 @@ const SwipeableItem = ({
 const styles = StyleSheet.create({
   swipeContainer: {
     position: "relative",
-    marginBottom: 10,
+    marginBottom: 20,
     flexDirection: "row",
     flex: 1,
     alignItems: "center",
   },
   icon:{
-   marginRight:10
+   marginRight:10,
+   marginLeft: 5,
   }
 });
 

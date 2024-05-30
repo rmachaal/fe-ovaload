@@ -130,7 +130,7 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     // padding: 15,
     paddingTop: 10,
-    // marginTop: 25
+    // marginTop: 25,
   },
   header: {
     fontSize: 28,
@@ -167,7 +167,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 10,
   },
-
+  
   title: {
     fontSize: 22,
     fontWeight: "800",
