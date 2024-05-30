@@ -8,6 +8,8 @@ import {
   ActivityIndicator,
   TouchableOpacity,
   TextInput,
+  KeyboardAvoidingView,
+  Platform,
 } from "react-native";
 import { getFriendsScores, patchNewFriendByUsername } from "../../api";
 import { UserContext } from "../contexts/UserContext";
@@ -67,61 +69,67 @@ const Leaderboard = () => {
   }
 
   return (
-    <View style={styles.container}>
-      <View style={styles.headerRow}>
-        <Text style={styles.headerText}>Ranking</Text>
-        <Text style={styles.headerText}>Name</Text>
-        <Text style={styles.headerText}>Score</Text>
-      </View>
-      <FlatList
-        data={leaderboardData}
-        renderItem={({ item, index }) => {
-          const image = imageMap[index];
-          return (
-            <View style={styles.tableRow}>
-              <Text style={styles.text}>#{index + 1}</Text>
-              <View style={styles.userImageName}>
-                <View>
-                  <Image source={image} style={styles.userImage} />
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      keyboardVerticalOffset={140}
+    >
+      <View style={styles.container}>
+        <View style={styles.headerRow}>
+          <Text style={styles.headerText}>Ranking</Text>
+          <Text style={styles.headerText}>Name</Text>
+          <Text style={styles.headerText}>Score</Text>
+        </View>
+        <FlatList
+          data={leaderboardData}
+          renderItem={({ item, index }) => {
+            const image = imageMap[index];
+            return (
+              <View style={styles.tableRow}>
+                <Text style={styles.text}>#{index + 1}</Text>
+                <View style={styles.userImageName}>
+                  <View>
+                    <Image source={image} style={styles.userImage} />
+                  </View>
+                  <View>
+                    <Text style={styles.userName}>{item.username}</Text>
+                  </View>
                 </View>
-                <View>
-                  <Text style={styles.userName}>{item.username}</Text>
-                </View>
+                <Text style={styles.score}>{item.score}</Text>
               </View>
-              <Text style={styles.score}>{item.score}</Text>
-            </View>
-          );
-        }}
-        keyExtractor={(item, index) => index.toString()}
-      />
-      <View style={styles.addFriendForm}>
-        {showInput ? (
-          <>
-            <TextInput
-              style={styles.addFriendInput}
-              placeholder="Enter your friend's username"
-              value={friend}
-              onChangeText={setFriend}
-            />
+            );
+          }}
+          keyExtractor={(item, index) => index.toString()}
+        />
+        <View style={styles.addFriendForm}>
+          {showInput ? (
+            <>
+              <TextInput
+                style={styles.addFriendInput}
+                placeholder="Enter your friend's username"
+                value={friend}
+                onChangeText={setFriend}
+              />
+              <TouchableOpacity
+                style={styles.addFriendButton}
+                onPress={handleAddFriend}
+                disabled={inputLoading}
+              >
+                <Ionicons name="person-add-outline" size={30} color="#fff" />
+              </TouchableOpacity>
+              {/* {inputLoading && <ActivityIndicator size="small" color="#7F00FF" />} */}
+            </>
+          ) : (
             <TouchableOpacity
               style={styles.addFriendButton}
-              onPress={handleAddFriend}
-              disabled={inputLoading}
+              onPress={() => setShowInput(true)}
             >
               <Ionicons name="person-add-outline" size={30} color="#fff" />
             </TouchableOpacity>
-            {/* {inputLoading && <ActivityIndicator size="small" color="#7F00FF" />} */}
-          </>
-        ) : (
-          <TouchableOpacity
-            style={styles.addFriendButton}
-            onPress={() => setShowInput(true)}
-          >
-            <Ionicons name="person-add-outline" size={30} color="#fff" />
-          </TouchableOpacity>
-        )}
+          )}
+        </View>
       </View>
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -130,7 +138,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     backgroundColor: "#fff",
-    paddingTop: 30
+    paddingTop: 30,
   },
   tabHeader: {
     fontSize: 35,

@@ -19,15 +19,20 @@ const TodaysChallenges = () => {
   const formattedDate = today.toLocaleDateString("en-CA", options);
 
   useEffect(() => {
-    async function getTodaysChallenges() {
+    const fetchTodaysChallenges = async () => {
       try {
         const data = await getPlannedExerciseByDate(username, formattedDate);
         setTodaysChallenges(data);
       } catch (error) {
         console.error("Error fetching today's challenges", error);
       }
-    }
-    getTodaysChallenges();
+    };
+
+    fetchTodaysChallenges();
+    // Set up timer to refresh data every 10 seconds
+    const intervalId = setInterval(fetchTodaysChallenges, 10000);
+    // Cleanup function to clear the interval when component unmounts
+    return () => clearInterval(intervalId);
   }, [username, formattedDate]);
 
   const formatExerciseName = (name) => {
