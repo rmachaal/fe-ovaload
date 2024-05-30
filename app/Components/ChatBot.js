@@ -10,6 +10,8 @@ import {
 import { UserContext } from "../contexts/UserContext";
 import { getChatbotMessage } from "../../api";
 import { Ionicons } from "@expo/vector-icons";
+import { ChatBubble } from 'react-native-chat-bubble';
+
 
 const ChatBot = () => {
   const { username } = useContext(UserContext);
@@ -81,9 +83,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
     width: "100%",
     marginTop: 50,
+    borderRadius: 16
   },
   jimRatPlusSpeech: {
-    flexDirection: "row"
+    flexDirection: "row",
   },
   jimRat: {
     paddingRight: 20
@@ -95,9 +98,9 @@ const styles = StyleSheet.create({
     fontWeight: "500",
     textAlign: "center",
     backgroundColor: "rgba(189, 181, 213, 0.25)",
+    borderRadius: 5,
     padding: 15,
-    borderRadius: 10,
-    marginTop: 5,
+    // marginTop: 5,
     // paddingLeft: 20,
     lineHeight: 30,
     margin: "auto"
