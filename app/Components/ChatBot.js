@@ -10,6 +10,8 @@ import {
 import { UserContext } from "../contexts/UserContext";
 import { getChatbotMessage } from "../../api";
 import { Ionicons } from "@expo/vector-icons";
+import { ChatBubble } from 'react-native-chat-bubble';
+
 
 const ChatBot = () => {
   const { username } = useContext(UserContext);
@@ -39,19 +41,24 @@ const ChatBot = () => {
 
   return (
     <View style={styles.container}>
+      <View style={styles.jimRatPlusSpeech}>
+      <View style={styles.jimRat}>
       <Image
         source={require("../../assets/leaderboard/level5.png")}
         style={styles.mascot}
       />
       <View style={styles.mascotContainer}>
         <Text style={styles.mascotTitle}>Jim Rat </Text>
+        </View>
         <Ionicons
           name="chatbubble-ellipses-outline"
           size={27}
           color="#7F00FF"
+          style={styles.speechBubble}
         />
       </View>
-      <Text style={styles.messageText}>{message}</Text>
+      <Text style={styles.messageText}>{message.replace(/!([^!]|$)/g, '!\n$1')}</Text>
+      </View>
       <FlatList
         data={responses}
         renderItem={({ item }) => (
@@ -71,20 +78,32 @@ const ChatBot = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flex: 0.85,
     justifyContent: "center",
     alignItems: "center",
     width: "100%",
-    marginTop: 5,
+    marginTop: 50,
+    borderRadius: 16
+  },
+  jimRatPlusSpeech: {
+    flexDirection: "row",
+  },
+  jimRat: {
+    paddingRight: 20
   },
   messageText: {
+    flex: 0.75,
+    flexWrap: "wrap",
     fontSize: 18,
     fontWeight: "500",
     textAlign: "center",
     backgroundColor: "rgba(189, 181, 213, 0.25)",
+    borderRadius: 5,
     padding: 15,
-    borderRadius: 10,
-    marginTop: 5,
+    // marginTop: 5,
+    // paddingLeft: 20,
+    lineHeight: 30,
+    margin: "auto"
   },
   responseList: {
     flexDirection: "row",

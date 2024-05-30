@@ -36,10 +36,11 @@ const TabNavigator = () => {
           style: styles.tabBar,
         }}
       >
-        <Tab.Screen name="Home" component={HomeScreen} />
-        <Tab.Screen name="Tracker" component={ProgressStackNavigator} />
-        <Tab.Screen name="Progress" component={ExercisesStackNavigator} />
-        <Tab.Screen name="Leaderboard" component={Leaderboard} />
+        <Tab.Screen name="Home" component={HomeScreen}  options={{ headerTitle: "Ovaload", headerTintColor: "#7F00FF", headerTitleStyle: {fontWeight: "900", fontSize: 28 }}} />
+        <Tab.Screen name="Progress" component={ProgressStackNavigator}  options={{ headerTitle: "Progress", headerTintColor: "#7F00FF", headerTitleStyle: {fontWeight: "800", fontSize: 24 }}} />
+        <Tab.Screen name="Exercises" component={ExercisesStackNavigator} options={{ headerTitle: "My Exercises", headerTintColor: "#7F00FF", headerTitleStyle: {fontWeight: "800", fontSize: 24 }}} />
+        <Tab.Screen name="Leaderboard" component={Leaderboard}  options={{ headerTitle: "Leaderboard", headerTintColor: "#7F00FF", headerTitleStyle: {fontWeight: "800", fontSize: 24 }}} />
+
       </Tab.Navigator>
   );
 };

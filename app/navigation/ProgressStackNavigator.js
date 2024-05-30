@@ -16,6 +16,7 @@ const ProgressStackNavigator = () => {
       <Stack.Screen
         name="AddPlannedExercise"
         component={AddPlannedExercise}
+        options={{headerTitle: '', headerTransparent: true, headerBackTitle: "Back", headerTintColor: "#7F00FF"}}
       />
     </Stack.Navigator>
   );
