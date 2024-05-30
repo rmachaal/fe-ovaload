@@ -19,15 +19,20 @@ const TodaysChallenges = () => {
   const formattedDate = today.toLocaleDateString("en-CA", options);
 
   useEffect(() => {
-    async function getTodaysChallenges() {
+    const fetchTodaysChallenges = async () => {
       try {
         const data = await getPlannedExerciseByDate(username, formattedDate);
         setTodaysChallenges(data);
       } catch (error) {
         console.error("Error fetching today's challenges", error);
       }
-    }
-    getTodaysChallenges();
+    };
+
+    fetchTodaysChallenges();
+    // Set up timer to refresh data every 10 seconds
+    const intervalId = setInterval(fetchTodaysChallenges, 10000);
+    // Cleanup function to clear the interval when component unmounts
+    return () => clearInterval(intervalId);
   }, [username, formattedDate]);
 
   const formatExerciseName = (name) => {
@@ -107,13 +112,18 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "rgba(128, 128, 128, 0.1)",
     borderRadius: 25,
-    padding: 20,
+    // padding: 15,
+    paddingTop: 10,
+    // marginTop: 25
   },
   header: {
     fontSize: 28,
     fontWeight: "600",
     color: "#7F00FF",
     marginBottom: 20,
+    marginTop: 10,
+    marginLeft: 20,
+    marginRight: 20,
     textAlign: "left",
   },
   challenge: {

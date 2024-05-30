@@ -4,20 +4,15 @@ import {
   Text,
   Modal,
   TextInput,
-  Button,
-  StyleSheet,
-  TouchableWithoutFeedback,
-  Keyboard,
   TouchableOpacity,
+  TouchableWithoutFeedback,
   KeyboardAvoidingView,
+  Keyboard,
   Platform,
+  StyleSheet,
 } from "react-native";
-import {
-  postExerciseStats,
-  patchChallenges,
-  patchLeaderboardScore,
-} from "../../api";
 import Icon from "react-native-vector-icons/Ionicons";
+import { patchPlannedExercise, postExerciseStats, patchLeaderboardScore} from "../../api";
 
 const CustomiseStats = ({
   item,
@@ -45,21 +40,13 @@ const CustomiseStats = ({
 
   const handleSubmit = async () => {
     try {
-      // Post new exercise stats
       await postExerciseStats(username, item.exerciseName, newStats);
-
-      // Patch challenges if applicable
-      await patchChallenges(username, item.date, item.exerciseName, {
+      await patchPlannedExercise(username, item.date, item.exerciseName, {
         completed: true,
       });
-
-      // Patch leaderboard score
       await patchLeaderboardScore(username, 1);
-
-      // Close the modal or perform additional actions
       closeModal();
     } catch (error) {
-      // Handle errors gracefully
       console.error("Error customizing stats:", error);
     }
   };
@@ -71,12 +58,16 @@ const CustomiseStats = ({
       transparent={true}
       onRequestClose={() => setShowModal(false)}
     >
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <View style={styles.modalContainer}>
-          <KeyboardAvoidingView
-            behavior={Platform.OS === "ios" ? "padding" : "height"}
-            style={styles.modalContent}
-          >
+      <TouchableWithoutFeedback
+        onPress={Keyboard.dismiss}
+        accessible={false}
+        style={{ flex: 1 }}
+      >
+        <KeyboardAvoidingView
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+          style={styles.modalContainer}
+        >
+          <View style={styles.modalContent}>
             <TouchableOpacity
               onPress={() => setShowModal(false)}
               style={styles.closeButton}
@@ -89,12 +80,11 @@ const CustomiseStats = ({
               <>
                 <TextInput
                   style={styles.input}
-                  onChangeText={(value) =>
-                    handleInputChange("distanceKm", value)
-                  }
+                  onChangeText={(value) => handleInputChange("distanceKm", value)}
                   value={distanceKm}
                   keyboardType="numeric"
                   placeholder="Distance (in km)"
+                  autoFocus={true}
                 />
 
                 <TextInput
@@ -113,6 +103,7 @@ const CustomiseStats = ({
                   value={weightKg}
                   keyboardType="numeric"
                   placeholder="Weight (in kg)"
+                  autoFocus={true}
                 />
 
                 <TextInput
@@ -132,6 +123,7 @@ const CustomiseStats = ({
                 />
               </>
             )}
+
             <TouchableOpacity
               style={styles.button}
               onPress={() => {
@@ -141,8 +133,8 @@ const CustomiseStats = ({
             >
               <Text style={styles.text}>Submit</Text>
             </TouchableOpacity>
-          </KeyboardAvoidingView>
-        </View>
+          </View>
+        </KeyboardAvoidingView>
       </TouchableWithoutFeedback>
     </Modal>
   );
@@ -159,14 +151,12 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     padding: 20,
     borderRadius: 10,
-    elevation: 5,
     width: "90%",
   },
   closeButton: {
     position: "absolute",
     top: 10,
     right: 10,
-    zIndex: 1,
   },
   input: {
     borderWidth: 1,
@@ -182,7 +172,6 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     paddingHorizontal: 32,
     borderRadius: 4,
-    elevation: 3,
     backgroundColor: "#7F00FF",
   },
   text: {

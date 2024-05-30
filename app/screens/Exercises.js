@@ -48,7 +48,7 @@ const Exercises = () => {
         style={styles.statItem}
         onPress={() => navigation.navigate('IndividualExercise', { exercise: item })}
       >
-        <Text style={styles.title}>{formatExerciseName(item.exerciseName)}</Text>
+        <Text style={styles.title}>{formatExerciseName(item.exerciseName)} </Text>
         <View style={styles.statDetails}>
           {item.exerciseType === "cardio" ? (
             <>
@@ -88,7 +88,6 @@ const Exercises = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.pageTitle}>My Exercises</Text>
       <FlatList
         data={exercises}
         keyExtractor={(item) => item._id}
@@ -111,6 +110,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
+    paddingTop: 20
   },
   contentContainer: {
     padding: 20,

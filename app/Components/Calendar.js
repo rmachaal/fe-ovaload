@@ -43,6 +43,7 @@ const Calendar = React.memo(({ selectedDate, onDateSelect }) => {
 const styles = StyleSheet.create({
   container: {
     marginBottom: 10,
+    marginTop:20,
     alignItems: "center",
   },
 });
