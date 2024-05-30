@@ -53,8 +53,6 @@ const NextChallenge = ({
     }
   };
 
-  const challengeContainerStyle = isToday ? styles.challengeContainer : styles.challengeContainerB;
-
   return (
     <View style={styles.nextChallengeContainer}>
       <View style={styles.deleteBackground}>
@@ -62,7 +60,7 @@ const NextChallenge = ({
       </View>
       <Animated.View
         style={[
-          challengeContainerStyle,
+          styles.challengeContainer,
           { transform: [{ translateX }] },
         ]}
         {...panResponder.panHandlers}
