@@ -9,9 +9,13 @@ export function getExercises(username) {
 }
 
 export function postExercises(username, newExercise) {
+  console.log(username, newExercise, "hi")
   return axios
-    .get(`https://ovaload-be.onrender.com/api/${username}/exercises`, {
+    .post(`https://ovaload-be.onrender.com/api/${username}/exercises`, {
       newExercise
+    })
+    .then((response)=>{
+      console.log(response.data);
     })
     .catch((err) => {
       console.log(err);
