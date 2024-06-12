@@ -2,6 +2,10 @@
 
 Ovaload is a fitness app designed to help users achieve their goals through the principle of progressive overload. This repository contains the React Native code for the mobile application UI.
 
+Checkout the demo video here: 
+[here](https://shorturl.at/rk0ws)
+
+
 ## Overview
 
 Ovaload's frontend is built using React Native and JavaScript, offering a seamless and responsive mobile experience for fitness enthusiasts. The backend repository for this app can be found [here](https://github.com/haroldinie/ovaload-be).
